@@ -1,0 +1,13 @@
+large=a[0];
+slarge=int_min
+(i=0;i<n;i++){
+    if(a[i]>large)
+    slarge=large;
+    large=a[i];
+    if(a[i]>slarge && a[i]<large){
+        a[i]=slarge;
+    }
+}
+iterate through code marking whatever comes as bigger than current largest as largest and prev one as second largest.
+TC-o(n)
+S-o(1)

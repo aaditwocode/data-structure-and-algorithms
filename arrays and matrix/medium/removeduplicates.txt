@@ -1,0 +1,13 @@
+ int removeDuplicates(vector<int>& a) {
+       int j=0;
+        for(int i=1;i<a.size();i++){
+            if(a[i]!=a[j]){
+                a[j+1]=a[i];
+                 j++;
+            }
+        }
+        return j+1;
+follow the two pointer approach where j is given as zero loop start for i as if a[i]!=a[j]
+a[j+1]=a[i] and at last return j+1
+TC-o(n)
+as-o(1)
