@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& a) {
+        int j = -1;
+        for(int i = 0; i < a.size(); i++) {
+            if(a[i] == 0 && j == -1) {
+                j = i;
+            }
+            if(a[i] != 0 && j != -1) {
+                swap(a[i], a[j]);
+                j++;
+            }
+        }
+    }
+};
+
+two pointer approach first find first zero and assign index j to that i  and start right after for index of i 
+and till end whichever element dont equal to zero swap them and increse j.
+tc-o(n)
+as-o(1)
