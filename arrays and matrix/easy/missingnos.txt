@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& a) {
+        sort(a.begin(),a.end());
+        int count=0;
+        for(int i=0;i<a.size();i++){
+            if(a[i]==i){
+                count++;
+            }
+        }
+        return count;
+    }
+};
+sorted the array and set the count to 0 if element is there at index count increases if not 
+count dont increase so hence that no
+tc-o(nlogn+n)
+ac-o(1)

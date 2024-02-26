@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int singleNumber(vector<int>& arr) {
+        int result = 0; 
+        for(int num : arr) {
+            result ^= num; 
+        }
+        return result; 
+    }
+};
+do xor of all eleemnt same number xor is zero and zero xor single appear would be number iteself 
+return that number
+tc-o(n)
+ac-o(1)
