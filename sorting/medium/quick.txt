@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void quickSort(int arr[], int low, int high) {
+        if (low < high) {
+            int pindex = partition(arr, low, high);
+            quickSort(arr, low, pindex - 1);
+            quickSort(arr, pindex + 1, high);
+        }
+    }
+
+    int partition(int arr[], int low, int high) {
+        int pivot = arr[low];
+        int i = low + 1; 
+        int j = high;
+        
+        while (i <= j) {
+            while (i <= high && arr[i] <= pivot) {
+                i++;
+            }
+            while (j >= low && arr[j] > pivot) {
+                j--;
+            }
+            if (i < j) {
+                swap(arr[i], arr[j]);
+            }
+        }
+        
+        swap(arr[low], arr[j]); 
+        return j;
+    }
+};
+
+
+while array is greater for more than elemnts first get an pindex=where partion function is passed 
+recursively call function for quicksort in it low till pindex-1 and pindex+1 till high
+
+onto partion function assign pivot to first elemnt two pointer i and j while ( i <= high && arr[i] <= pivot) i++ as no need 
+(j >= low && arr[j] > pivot) j-- if escapes from it swap arr[i] arr[j] at last put pivot elemnt
+ with j th index eleemnt swap to get the sorted arry
+
+tc-o(nlogn)
+ac-o(1)

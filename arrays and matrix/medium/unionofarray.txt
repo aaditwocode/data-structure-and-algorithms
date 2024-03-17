@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> printIntersection(int arr1[], int arr2[], int n, int m) {
+        unordered_set<int> set;
+        vector<int> result;
+        
+        for (int i = 0; i < n; i++) {
+            set.insert(arr1[i]);
+        }
+
+       
+        for (int i = 0; i < m; i++) {
+            if (set.find(arr2[i]) != set.end()) {
+                if (result.empty() || result.back() != arr2[i]) {
+                    result.push_back(arr2[i]);
+                }
+            }
+        }
+
+        return result;
+    }
+};
+
+initilize a unorderd set and put all elemnts of first array into it now run loop for 
+second and generate if element does not exist it pushback into set who push it back it to result vector
