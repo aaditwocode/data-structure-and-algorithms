@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int low = 0;
+        int high = nums.size() - 1;
+        while (start <= end) {
+            int mid = low + (high -low) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return -1;
+    }
+};
+
+indexing low,high ,mid to mark as avoiding overflow way
+if elemnt is greter than mid cancel left side and change start as mid+1
+else cancel right side and change end as mid-1
+
+tc-o(logn)
+ac-o(1)

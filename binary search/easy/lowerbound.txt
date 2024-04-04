@@ -1,0 +1,25 @@
+int lowerBound(vector<int> arr, int n, int x) {
+	 int low = 0, high = n - 1;
+    int ans = n;
+
+    while (low <= high) {
+        int mid =low+ ( high - low) / 2;
+        
+        if (arr[mid] >= x) {
+            ans = mid;
+           
+            high = mid - 1;
+        }
+        else {
+            low = mid + 1; 
+        }
+    }
+    return ans;
+}
+
+
+mark low and high and mid and ans as size of array
+if middle element is greater than x then search left and update ans 
+else if you cant search right and update low still nothing return size of array
+ tc-o(logn)
+ ac-o(1)
