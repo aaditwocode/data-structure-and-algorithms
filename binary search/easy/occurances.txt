@@ -1,0 +1,22 @@
+#include <vector>
+#include <algorithm>
+
+int count(vector<int>& arr, int n, int x) {
+    vector<int> occurrences;
+    int lb = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
+    int ub = upper_bound(arr.begin(), arr.end(), x) - arr.begin() - 1;
+    
+    for (int i = lb; i <= ub; i++) {
+        if (arr[i] == x) {
+            occurrences.push_back(arr[i]);
+        }
+    }
+    
+    return occurrences.size();
+}
+
+find ub-1(last) and lb(first)
+run a loop lb<=ub if any comes pushback it into vector occurrences
+return the size at last
+tc-o(logn)
+ ac-o(1)

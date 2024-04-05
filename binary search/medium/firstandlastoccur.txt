@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& arr, int x) {
+        int n=arr.size();
+        int lb=lower_bound(arr.begin(),arr.end(),x)-arr.begin();
+        int ub=upper_bound(arr.begin(),arr.end(),x)-arr.begin()-1;
+        if(lb==n ||     arr[lb]!=x)  return {-1,-1};
+        else
+        return{lb,ub};
+    }
+};
+
+first use and find and ub(last)-1,lb(first) just take care of 
+edgecase if lowerbound reaches such that it point  to end of array 
+and given element is not equal to x  then it returns -1,-1
+rest return lb,ub
+
+other way would be finding first and last ocurance seprately 
+tc-o(logn)
+ ac-o(1)
