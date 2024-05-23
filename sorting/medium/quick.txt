@@ -14,6 +14,7 @@ public:
         int j = high;
         
         while (i <= j) {
+            
             while (i <= high && arr[i] <= pivot) {
                 i++;
             }
@@ -31,7 +32,7 @@ public:
 };
 
 
-while array is greater for more than elemnts first get an pindex=where partion function is passed 
+while array is greater for more than elemnts are present first get an pindex=where partion function is passed 
 recursively call function for quicksort in it low till pindex-1 and pindex+1 till high
 
 onto partion function assign pivot to first elemnt two pointer i and j while ( i <= high && arr[i] <= pivot) i++ as no need 
