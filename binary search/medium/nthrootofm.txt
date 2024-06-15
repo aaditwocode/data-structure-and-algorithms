@@ -1,0 +1,37 @@
+int power(int base, int exponent) {
+    int result = 1;
+    for (int i = 0; i < exponent; ++i) {
+        if (result > INT_MAX / base) // Check for overflow
+            return INT_MAX;
+        result *= base;
+    }
+    return result;
+}
+
+int NthRoot(int n, int m) {
+    int low = 1;
+    int high = m;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        int midPower = power(mid, n);
+
+        if (midPower == m) {
+            return mid;
+        } else if (midPower < m) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+
+assign low and high and mid as earlier answer problem type make midpower number which store mid,n power function 
+if it equals the number m return mid
+if its less you need to look after mid numbers to find match
+if its more than it so trim the right side space as no number else would be satisfy our need so do high=mid-1;
+
+tc-(ologn*n)
+ac-(o1)
