@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int dividing(vector<int>& nums, int z) {
+        int sum = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+
+            // Use ceil-like integer division
+            sum += (nums[i] + z - 1) / z;
+        }
+        return sum;
+    }
+
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int low = 1;
+        int high = *max_element(nums.begin(), nums.end());
+        int result = -1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (dividing(nums, mid) <= threshold) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return result;
+    }
+};
+
+self explanatory
+O(nlogM)-tc
+ac-o(1)
