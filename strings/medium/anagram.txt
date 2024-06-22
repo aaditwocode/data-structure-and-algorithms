@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+    
+        if (n != m) {
+            return false;
+        }
+
+        int cnt = 0;
+    for (int i = 0; i < n; ++i) {
+    bool found = false; // Flag to track if we found a match for s[i] in t
+    for (int j = 0; j < n; ++j) {
+        if (s[i] == t[j]) {
+            found = true;
+            t[j] = '#'; // Mark the character as visited or use a separate visited array
+            break; // Exit the inner loop after finding a match
+        }
+    }
+    
+    if (found) {
+        cnt++; // Increment count only if a match was found
+    }
+}
+
+
+        if(cnt==n){
+            return true;
+        }
+        else
+        return false;
+    }
+};

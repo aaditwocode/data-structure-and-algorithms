@@ -1,0 +1,58 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.empty()) return "";
+        
+        string prefix = strs[0];
+        for (int i = 1; i < strs.size(); ++i) {
+            int j = 0;
+            while (j < prefix.size() && j < strs[i].size() && prefix[j] == strs[i][j]) {
+                ++j;
+            }
+            prefix = prefix.substr(0, j);
+            if (prefix.empty()) return "";
+        }
+        
+        return prefix;
+    }
+};
+
+
+vector<string> strs = {"flower", "flow", "flight"};
+1. **Initial Check**:
+   - Check if `strs` is empty. It's not, so proceed.
+
+2. **Initialize `prefix`**:
+   - Set `prefix` to the first string in `strs`: `prefix = "flower"`
+
+3. **Iterate through the strings**:
+   - Start the loop from index `1` (since `prefix` is already set to `strs[0]`).
+   - Compare `prefix` with each subsequent string in `strs`.
+
+4. **Comparison Process**:
+   - **First Comparison (`prefix` vs `strs[1] = "flow"`)**:
+     - Initialize `j = 0`.
+     - Compare characters: `prefix[0] ('f')` vs `strs[1][0] ('f')`, match, so increment `j`.
+     - `j = 1`.
+     - Compare `prefix[1] ('l')` vs `strs[1][1] ('l')`, match, so increment `j`.
+     - `j = 2`.
+     - Compare `prefix[2] ('o')` vs `strs[1][2] ('o')`, match, so increment `j`.
+     - `j = 3`.
+     - Compare `prefix[3] ('w')` vs `strs[1][3] ('w')`, match, so increment `j`.
+     - `j = 4`.
+     - At this point, `prefix` is `"flow"`.
+
+   - **Second Comparison (`prefix` vs `strs[2] = "flight"`)**:
+     - Initialize `j = 0`.
+     - Compare characters: `prefix[0] ('f')` vs `strs[2][0] ('f')`, match, so increment `j`.
+     - `j = 1`.
+     - Compare `prefix[1] ('l')` vs `strs[2][1] ('l')`, match, so increment `j`.
+     - `j = 2`.
+     - Compare `prefix[2] ('o')` vs `strs[2][2] ('i')`, no match (end of common prefix).
+     - So, `prefix = "flo"`.
+
+5. **Update `prefix`**:
+   - After comparing with each string, update `prefix` to `"flo"` (the longest common prefix found).
+
+6. **Return the Result**:
+   - The longest common prefix among all strings in `strs` is `"flo"`, so the function returns `"flo"`.

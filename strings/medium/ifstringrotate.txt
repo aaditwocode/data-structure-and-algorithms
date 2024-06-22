@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        int n = s.size();
+        int m = goal.size();
+        
+        // Check if lengths are equal
+        if (n != m) {
+            return false;
+        }
+        
+        // Concatenate s with itself
+        string doubleS = s + s;
+        
+        // Check if goal is a substring of doubleS
+        if (doubleS.find(goal) != string::npos) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
+self explanatory
