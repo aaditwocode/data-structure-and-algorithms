@@ -1,0 +1,29 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+   
+         void deleteNode(ListNode* node) {
+        if (node == nullptr || node->next == nullptr) {
+            // If node is null or it's the last node, we can't delete it properly
+            return;
+        }
+        
+        // Copy the value from the next node to the current node
+        ListNode* nextNode = node->next;
+        node->val = nextNode->val;
+        node->next = nextNode->next;
+        
+        // Delete the next node
+        delete nextNode;
+    }
+    
+};
+
+rest 3 types in register
