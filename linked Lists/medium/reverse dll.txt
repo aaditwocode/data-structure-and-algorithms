@@ -1,0 +1,40 @@
+struct Node
+{
+    int data;
+    Node * next;
+    Node * prev;
+    Node (int x)
+    {
+        data=x;
+        next=NULL;
+        prev=NULL;
+    }
+        
+};
+*/
+class Solution
+{
+public:
+    Node* reverseDLL(Node* head)
+    {
+        Node* temp = head;
+        Node* newHead = nullptr; 
+
+        while (temp != nullptr) {
+           
+            Node* back = temp->prev;
+            temp->prev = temp->next;
+            temp->next = back;
+
+          
+            newHead = temp; 
+            temp = temp->prev;
+        }
+
+        return newHead; 
+    }
+};
+
+   // Swap next and prev pointers
+   // Move newHead to the last processed node
+   // Move to the next node in the original list (which is now prev)
