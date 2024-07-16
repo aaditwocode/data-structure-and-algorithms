@@ -1,0 +1,74 @@
+optinize
+
+Node* DeleteNthNodefromEnd(Node* head, int N) {
+    // Create two pointers, fastp and slowp
+    Node* fastp = head;
+    Node* slowp = head;
+
+    // Move the fastp pointer N nodes ahead
+    for (int i = 0; i < N; i++)
+        fastp = fastp->next;
+
+    // If fastp becomes NULL,
+    // the Nth node from the end is the head
+    if (fastp == NULL)
+        return head->next;
+
+    // Move both pointers until fastp reaches the end
+    while (fastp->next != NULL) {
+        fastp = fastp->next;
+        slowp = slowp->next;
+    }
+
+    // Delete the Nth node from the end
+    Node* delNode = slowp->next;
+    slowp->next = slowp->next->next;
+    delete delNode;
+    return head;
+}
+
+brute
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+           if (head == nullptr) return nullptr;
+
+        ListNode* temp = head;
+        int cnt = 0;
+
+        while (temp != nullptr) {
+            cnt++;
+            temp = temp->next;
+        }
+
+       
+        if (n > cnt) return head;
+
+        
+        int toreach = cnt - n;
+
+    
+        if (toreach == 0) {
+            ListNode* toDelete = head;
+            head = head->next;
+            delete toDelete;
+            return head;
+        }
+
+  
+        temp = head;
+
+        
+        for (int i = 1; i < toreach; ++i) {
+            temp = temp->next;
+        }
+
+        
+        ListNode* toDelete = temp->next;
+        temp->next = temp->next->next;
+        delete toDelete;
+
+        return head;
+    }
+};
+ 
