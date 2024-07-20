@@ -1,0 +1,45 @@
+/* 
+class MyQueue {
+private:
+    int arr[100005];
+    int front;
+    int rear;
+    int cursize;
+
+public:
+    MyQueue() : front(-1), rear(-1), cursize(0) {}
+
+    void push(int x);
+    int pop();
+};
+*/
+
+void MyQueue::push(int x) {
+    if (cursize == 100005) {
+        return; // Queue overflow condition
+    }
+    if (cursize == 0) {
+        front = 0;
+        rear = 0;
+    } else {
+        rear = (rear + 1) % 100005;
+    }
+    arr[rear] = x;
+    cursize++;
+}
+
+int MyQueue::pop() {
+    if (cursize == 0) {
+        return -1; // Queue underflow condition
+    }
+    int el = arr[front];
+    if (cursize == 1) {
+        front = -1;
+        rear = -1;
+    } else {
+        front = (front + 1) % 100005;
+    }
+    cursize--;
+    return el;
+}
+};

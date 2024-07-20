@@ -1,0 +1,31 @@
+struct StackNode {
+    int data;
+    StackNode* next;
+    
+    StackNode(int data) : data(data), next(nullptr) {}
+};
+
+class MyStack {
+private:
+    StackNode* top;
+
+public:
+    MyStack() : top(nullptr) {}
+
+    void push(int x) {
+        StackNode* temp = new StackNode(x);
+        temp->next = top;
+        top = temp;
+    }
+
+    int pop() {
+        if (top == nullptr) {
+            return -1; 
+        }
+        StackNode* temp = top;
+        top = top->next;
+        int poppedData = temp->data;
+        delete temp;
+        return poppedData;
+    }
+};
