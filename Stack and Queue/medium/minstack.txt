@@ -1,0 +1,84 @@
+naive-O(2n)
+
+class MinStack {
+public:
+stack<pair<int,int>>s;
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+      
+     if (s.empty()) {
+        s.push({val, val}); 
+    } else {
+        int min_val = min(val, s.top().second);
+        s.push({val, min_val}); 
+    }
+}
+    
+    
+    void pop() {
+        pair<int,int> popped=s.top();
+        s.pop();
+       
+    }
+    
+    int top() {
+        int m=s.top().first;
+        return m;
+    }
+    
+    int getMin() {
+         int m=s.top().second;
+         return m;
+    }
+};
+
+
+optimized ac-0(n)
+
+
+
+class MinStack {
+public:
+stack<long long>s;
+int mini=100000000;
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+      
+     if (s.empty()) {
+        s.push(val); 
+        mini=val;
+     }
+        else if(val < mini) {
+                s.push(2*val - mini);
+                mini=val;
+        }
+    else {
+                     s.push(val);
+    }
+}
+    
+    
+    void pop() {
+        int x = s.top();
+        s.pop();
+        if(x< mini)  mini=2*mini-x;
+       
+    }
+    
+    int top() {
+        int m=s.top();
+       if(m  < mini)  return m;
+       else 
+       return mini;
+    }
+    
+    int getMin() {
+         return mini;
+    }
+};
