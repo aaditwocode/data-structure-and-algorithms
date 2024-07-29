@@ -24,7 +24,7 @@ public:
                 }
             }
             s.push(nums2[i]);
-            i++;
+            i--;
         }
 
         reverse(v.begin(), v.end());
