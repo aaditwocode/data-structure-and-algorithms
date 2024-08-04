@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int winningPlayerCount(int n, vector<vector<int>>& pick) {
+         int winner=0;
+         int players[11][11]={0};
+         
+         for (const auto& p : pick)
+        {
+            players[p[0]][p[1]]++;
+        }
+
+         for (int i = 0; i < 11; ++i)
+        {
+            for (int j = 0; j < 11; ++j)
+            {
+                if (players[i][j] > i) 
+                { 
+                    winner++; 
+                    break;
+                }
+            }
+        }
+   
+         return winner;
+    }
+};
+
+pick elements traversal was a must as p[0][1] acces each elements pick by piece and no tension i iteration

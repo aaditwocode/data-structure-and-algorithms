@@ -1,0 +1,30 @@
+class Solution {
+public:
+    // Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int>>& M, int n) {
+        int top = 0;
+        int down = n - 1;
+
+        // Find the potential celebrity.
+        while (top < down) {
+            if (M[top][down] == 1) {
+                top++;  // top knows down, so top can't be a celebrity.
+            } else {
+                down--;  // top doesn't know down, so down can't be a celebrity.
+            }
+        }
+
+        int candidate = top;
+
+      
+        for (int i = 0; i < n; i++) {
+            if (i != candidate) {
+                if (M[candidate][i] == 1 || M[i][candidate] == 0) {
+                    return -1;
+                }
+            }
+        }
+
+        return candidate;
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        int n = num.size();
+        stack<char> s;
+        
+        for (int i = 0; i < n; ++i) {
+            while (!s.empty() && s.top() > num[i] && k > 0) {
+                s.pop();
+                k--;
+            }
+            s.push(num[i]);
+        }
+        
+        while (k > 0 && !s.empty()) {
+            s.pop();
+            k--;
+        }
+
+        string result;
+         while (!s.empty()) {
+            result += s.top();
+            s.pop();
+        }
+        reverse(result.begin(), result.end());
+        
+        // Remove leading zeros
+        size_t pos = result.find_first_not_of('0');
+        if (pos == string::npos) {
+               result = "0";
+           } else {
+            result = result.substr(pos);
+           }
+
+        return result;
+        
+    }
+};
