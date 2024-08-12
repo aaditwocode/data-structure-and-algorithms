@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void permutation(const string& s, int index, string current, vector<string>& result) {
+        if (index == s.length()) {
+            result.push_back(current);
+            return;
+        }
+
+        char ch = s[index];
+        if (isalpha(ch)) {
+         
+            permutation(s, index + 1, current + static_cast<char>(tolower(ch)), result);
+
+            permutation(s, index + 1, current + static_cast<char>(toupper(ch)), result);
+        } else {
+            
+            permutation(s, index + 1, current + ch, result);
+        }
+    }
+
+    vector<string> letterCasePermutation(const string& s) {
+        vector<string> result;
+        permutation(s, 0, "", result);
+        sort(result.begin(), result.end()); 
+        return result;
+    }
+};

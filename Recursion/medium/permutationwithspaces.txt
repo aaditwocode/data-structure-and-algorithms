@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void permutation(vector<string> ip, string op, vector<string>& result) {
+        // Base case: when the input vector is empty
+        if (ip.size() == 0) {
+            result.push_back(op); // Store the output string
+            return;
+        }
+        
+        // Create two options: one with a space and one without
+        string op1 = op + ip[0];       // Without space
+        string op2 = op + " " + ip[0]; // With space
+
+        // Remove the first character from input
+        ip.erase(ip.begin());
+
+        // Recursively generate permutations for the remaining characters
+        permutation(ip, op1, result);
+        permutation(ip, op2, result);
+    }
+     
+    vector<string> permutation(string s) {
+        vector<string> ip;
+        vector<string> result;
+        
+        // Convert string to a vector of strings where each character is an element
+        for(char c : s) {
+            ip.push_back(string(1, c));
+        }
+        
+        string op = ip[0]; // Initialize the output with the first character
+        ip.erase(ip.begin()); // Remove the first character from the input vector
+        
+        // Start the permutation process
+        permutation(ip, op, result);
+
+        // Sort the result in lexicographical order
+        sort(result.begin(), result.end());
+
+        return result;
+    }
+};

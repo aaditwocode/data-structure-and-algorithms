@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void subset(vector<int>& ip, vector<int> op, vector<vector<int>>& result) {
+        if(ip.size() == 0) {
+            result.push_back(op);
+            return;
+        }
+        
+        vector<int> op1 = op;
+        vector<int> op2 = op;
+        op2.push_back(ip[0]);
+
+        ip.erase(ip.begin());
+
+    
+        subset(ip, op1, result);
+      
+        subset(ip, op2, result);
+
+        ip.insert(ip.begin(), op2.back());
+    }
+
+    vector<vector<int>> subsets(vector<int>& ip) {
+        vector<vector<int>> result;  
+        vector<int> op; 
+
+        subset(ip, op, result);  
+
+        return result; 
+    }
+};
