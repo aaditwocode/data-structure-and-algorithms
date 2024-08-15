@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int solve(vector<int>& box, int k) {
+        int index = 0;
+        while (box.size() > 1) {
+            index = (index + k) % box.size();
+            box.erase(box.begin() + index);
+        }
+        return box[0];
+    }
+    
+    int findTheWinner(int n, int k) {
+        vector<int> box;
+        for (int i = 1; i <= n; ++i) {
+            box.push_back(i);
+        }
+        k--; 
+        return solve(box, k);
+    }
+};
+
+
+RECUSRIVE Solution
+class Solution {
+public:
+    int solve(int n, int k) {
+        // Base case: if there's only one person, they're the winner.
+        if (n == 1) {
+            return 0; // 0-based index
+        }
+        // Recursive case: find the winner in the smaller circle.
+        int x = solve(n - 1, k);
+        return (x + k) % n;
+    }
+    
+    int findTheWinner(int n, int k) {
+        // The Josephus problem solution returns 0-based index,
+        // so we convert it to 1-based by adding 1.
+        return solve(n, k) + 1;
+    }
+};
