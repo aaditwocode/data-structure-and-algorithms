@@ -1,0 +1,40 @@
+void radixSort(vector<int>& arr) {
+    int n = arr.size();
+    int max_val = arr[0];
+
+    
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max_val) {
+            max_val = arr[i];
+        }
+    }
+
+  
+    vector<vector<int>> bins(10);
+
+    for (int exp = 1; max_val / exp > 0; exp *= 10) {
+        for (int i = 0; i < n; i++) {
+            int digit = (arr[i] / exp) % 10; 
+            bins[digit].push_back(arr[i]);  
+        }
+
+     
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            for (int num : bins[i]) {
+                arr[index++] = num; 
+            }
+            bins[i].clear(); 
+        }
+    }
+}
+ 
+// Step 1: Find the maximum value in the array to determine the number of digits
+// Initialize bins (vectors) for each digit 0-9
+// Step 2: Start with the least significant digit and work up to the most significant
+// Place each element in the corresponding bin based on the current digit
+// Get the digit at the current place
+// Place the number in the appropriate bin
+// Copy all elements back to the original array in order
+// Place back in the original array
+// Clear the bin for the next iteration

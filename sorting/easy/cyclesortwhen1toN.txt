@@ -1,0 +1,14 @@
+void cyclesort(vector<int>& arr) {
+    int i = 0;
+    while (i < arr.size()) {
+        int correct = arr[i] - 1; // Assuming the array elements are in the range [1, N]
+        if (arr[i] != arr[correct])
+            swap(arr[i], arr[correct]);
+        else
+            i++;
+    }
+}
+
+
+
+o to n correct=arr[i];

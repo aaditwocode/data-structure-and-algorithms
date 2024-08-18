@@ -1,0 +1,29 @@
+void countingSort(vector<int>& arr) {
+    if (arr.empty()) return;
+
+   
+    int largest = *max_element(arr.begin(), arr.end());
+    
+   
+    vector<int> frequency(largest + 1, 0);
+
+    // Step 3: Fill the frequency array
+    for (int num : arr) {
+        frequency[num]++;
+    }
+
+    // Step 4: Reconstruct the original array using the frequency array
+    int index = 0;
+    for (int i = 0; i <= largest; i++) {
+        while (frequency[i] > 0) {
+            arr[index++] = i;
+            frequency[i]--;
+        }
+    }
+}
+
+ // Step 1: Find the largest element in the array
+// Step 2: Create a frequency array of size `largest + 1`
+// Step 3: Fill the frequency array
+// Step 4: Reconstruct the original array using the frequency array
+done for small nos only
