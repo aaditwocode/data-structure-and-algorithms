@@ -1,0 +1,19 @@
+function searchNearlySorted(arr, target):
+    start = 0
+    end = arr.length - 1
+    
+    while start <= end:
+        mid = start + (end - start) / 2
+        
+        if arr[mid] == target:
+            return mid
+        elif mid - 1 >= start and arr[mid - 1] == target:
+            return mid - 1
+        elif mid + 1 <= end and arr[mid + 1] == target:
+            return mid + 1
+        elif target < arr[mid]:
+            end = mid - 2
+        else:
+            start = mid + 2
+    
+    return -1  // Element not found

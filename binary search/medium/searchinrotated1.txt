@@ -35,3 +35,72 @@ public:
 };
 
 self explanatory
+
+
+IGNORE
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        int low = 0;
+        int high = n - 1;
+
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+
+            // If the middle element is less than the high element, minimum is in the left half
+            if (nums[mid] < nums[high]) {
+                high = mid;
+            }
+            // If the middle element is greater than the high element, minimum is in the right half
+            else if (nums[mid] > nums[high]) {
+                low = mid + 1;
+            }
+            // When nums[mid] == nums[high], reduce high by 1
+            else {
+                high--;
+            }
+        }
+
+        return low; // Index of the minimum element
+    }
+
+    int binarySearch(vector<int>& nums, int low, int high, int target) {
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    int search(vector<int>& nums, int target) {
+        int minIndex = findMin(nums); // Find the index of the minimum element
+        int n = nums.size();
+
+        // Binary search in the left sorted part
+        int leftResult = binarySearch(nums, 0, minIndex - 1, target);
+
+        // Binary search in the right sorted part
+        int rightResult = binarySearch(nums, minIndex, n - 1, target);
+
+        // Return the index if found, otherwise -1
+        if (leftResult != -1) {
+            return leftResult;
+        } else if (rightResult != -1) {
+            return rightResult;
+        } else {
+            return -1;
+        }
+    }
+};
+
+

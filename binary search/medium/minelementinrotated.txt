@@ -1,29 +1,39 @@
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int left = 0, right = nums.size() - 1;
-        int ans = INT_MAX;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            //if everything is sorted
-            if (nums[left] <= nums[right]) {
-                ans = min(ans, nums[left]);
-                break;
+        int n = nums.size();
+        int low = 0;
+        int high = n - 1;
+
+        while (low <= high) {
+           
+            if (nums[low] <= nums[high]) {
+                return nums[low];
             }
-            // Determine which half is properly sorted
-            else if (nums[left] <= nums[mid]) {
-                ans = min(ans, nums[left]);
-                left = mid + 1;
-            } else {
-                // Right half is sorted
-                ans = min(ans, nums[mid]);
-                right = mid - 1;
+
+            int mid = low + (high - low) / 2;
+            int next = (mid + 1) % n;
+            int prev = (mid + n - 1) % n;
+
+        
+            if (nums[mid] <= nums[next] && nums[mid] <= nums[prev]) {
+                return nums[mid];
+            }
+        
+            else if (nums[low] <= nums[mid]) {
+                low = mid + 1;
+            }
+          
+            else {
+                high = mid - 1;
             }
         }
 
-        // If the loop terminates, return the minimum element found
-        return ans;
+        return -1;
     }
 };
+
+
+mid index is the number of rotations in sorted array
 
 pretty self explanatory

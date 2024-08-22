@@ -1,0 +1,25 @@
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& arr, char target) {
+        char res=arr[0];
+        int n=arr.size();
+        int start=0;
+        int end=n-1;
+        while(start <= end){
+            int mid=start + (end - start) / 2;
+            
+        if (arr[mid] == target)
+              start = mid + 1;
+
+        else if (target < arr[mid]){
+            res=arr[mid];
+            end = mid -1;
+        }
+        else 
+            start = mid + 1;
+        }
+
+        return res;
+        }
+
+};
