@@ -1,0 +1,33 @@
+int binarySearch(int arr[], int start, int end, int key) {
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (arr[mid] == key) {
+            return mid;
+        }
+        
+        else if (arr[mid] < key) {
+            start = mid + 1;
+        }
+  
+        else {
+            end = mid - 1;
+        }
+    }
+    return -1; 
+}
+
+int findPositionInInfiniteArray(int arr[], int key) {
+    int start = 0;
+    int end = 1;
+
+    // Expand the range to find the correct interval where key may reside
+    while (key > arr[end]) {
+        start = end;  // Move start to current end
+        end *= 2;     // Double the end index
+    }
+
+ 
+    return binarySearch(arr, start, end, key);
+}
+
+

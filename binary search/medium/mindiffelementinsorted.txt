@@ -1,0 +1,35 @@
+int findMinDiffElement(int arr[], int n, int key) {
+    int start = 0, end = n - 1;
+    int floor = -1, ceil = -1;
+
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        // Case 1: If key is present in the array
+        if (arr[mid] == key) {
+            return arr[mid]; // The key itself is the closest element
+        }
+
+        // Update floor and move to the right subarray
+        if (arr[mid] < key) {
+            floor = arr[mid];
+            start = mid + 1;
+        }
+        // Update ceil and move to the left subarray
+        else {
+            ceil = arr[mid];
+            end = mid - 1;
+        }
+    }
+
+    // Case 2: Key is not present in the array
+    // Compare floor and ceil to find the element with the minimum difference
+    if (floor == -1) return ceil; // If there's no smaller element (only ceil exists)
+    if (ceil == -1) return floor; // If there's no larger element (only floor exists)
+    
+    if (abs(key - floor) <= abs(ceil - key)) {
+        return floor;
+    } else {
+        return ceil;
+    }
+}
