@@ -1,0 +1,40 @@
+bool isValid(const vector<int>& arr, int k, long long maxTime) {
+    int painters = 1;
+    long long sum = 0;
+
+    for (int length : arr) {
+        if (length > maxTime) {
+            return false;
+        }
+        if (sum + length <= maxTime) {
+            sum += length;
+        } else {
+            painters++;
+            sum = length;
+            if (painters > k) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+int findLargestMinDistance(vector<int>& arr, int k) {
+    long long start = *max_element(arr.begin(), arr.end());
+    long long end = accumulate(arr.begin(), arr.end(), 0LL);
+    long long result = end;
+
+    while (start <= end) {
+        long long mid = start + (end - start) / 2;
+
+        if (isValid(arr, k, mid)) {
+            result = mid;
+            end = mid - 1;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    return (int)result;
+}

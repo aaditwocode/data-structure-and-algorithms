@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int kthElement(int k, vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size();
+        int n = nums2.size();
+        int i = 0, j = 0;
+
+     
+        for (int count = 0; count < k; ++count) {
+            if (i < m && (j >= n || nums1[i] <= nums2[j])) {
+            
+                if (count == k - 1) return nums1[i];
+                ++i;
+            } else {
+                
+                if (count == k - 1) return nums2[j];
+                ++j;
+            }
+        }
+
+       
+        return -1;
+    }
+};

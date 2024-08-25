@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function to check if it is possible to place cows with at least 'distance' apart
+bool isvalid(vector<int>& arr, int n, int k, int distance) {
+    int cows_placed = 1;  // Place the first cow in the first stall
+    int last_position = arr[0];  // The position of the last placed cow
+
+    for (int i = 1; i < n; i++) {
+        if (arr[i] - last_position >= distance) {
+            cows_placed++;  // Place the next cow
+            last_position = arr[i];  // Update the position of the last placed cow
+            if (cows_placed == k) {
+                return true;  // All cows placed successfully
+            }
+        }
+    }
+
+    return false;  // Not possible to place all cows with at least 'distance' apart
+}
+
+int maxMinDistance(vector<int>& arr, int n, int k) {
+    sort(arr.begin(), arr.end());  // Sort the stalls positions
+
+    int start = 1;  // Minimum possible distance
+    int end = arr[n-1] - arr[0];  // Maximum possible distance
+    int res = -1;
+
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (isvalid(arr, n, k, mid)) {
+            res = mid;  // Valid configuration, try for a better (larger) minimum distance
+            start = mid + 1;
+        } else {
+            end = mid - 1;  // Invalid configuration, reduce the minimum distance
+        }
+    }
+
+    return res;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 8, 4, 9};  // Example stall positions
+    int n = arr.size();
+    int k = 3;  // Number of cows
+    int result = maxMinDistance(arr, n, k);
+    
+    cout << "The largest minimum distance: " << result << endl;
+
+    return 0;
+}

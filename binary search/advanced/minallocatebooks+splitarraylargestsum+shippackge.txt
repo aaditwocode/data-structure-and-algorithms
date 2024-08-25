@@ -1,0 +1,171 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool isvalid(vector<int>& arr, int n, int k, int mx) {
+    int students = 1;  // Start with the first student
+    int sum = 0;  // Initialize sum of pages
+
+    for (int m : arr) {
+        if (sum + m <= mx) {
+            sum += m;  // Accumulate the pages for the current student
+        } else {
+            students++;  // Allocate to the next student
+            sum = m;  // Start the new student's allocation with the current book
+            if (students > k) {
+                return false;  // More students needed than allowed
+            }
+        }
+    }
+
+    return true;  // Allocation is possible within the given number of students
+}
+
+int findPages(vector<int>& arr, int n, int k) {
+    int start = *max_element(arr.begin(), arr.end());  // Minimum possible value
+    int sum = 0;
+    for (int m : arr) {
+        sum += m;
+    }
+    int end = sum;  // Maximum possible value
+    int res = -1;
+
+    if (n < k) {
+        return -1;  // Not enough books for each student to get at least one
+    }
+
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (isvalid(arr, n, k, mid)) {
+            res = mid;  // Valid configuration, try for a better (lower) maximum
+            end = mid - 1;
+        } else {
+            start = mid + 1;  // Invalid configuration, increase the maximum pages
+        }
+    }
+
+    return res;
+}
+
+int main() {
+    vector<int> arr = {12, 34, 67, 90};  // Example book page counts
+    int n = arr.size();
+    int k = 2;  // Number of students
+    int result = findPages(arr, n, k);
+    
+    if (result != -1) {
+        cout << "The minimum possible maximum number of pages: " << result << endl;
+    } else {
+        cout << "Allocation not possible" << endl;
+    }
+
+    return 0;
+}
+
+
+SIMILAR PROBLEM
+class Solution {
+public:
+    bool isvalid(vector<int>& arr, int n, int k, int mx) {
+        int subarraydone = 1;  
+        int sum = 0;  
+
+        for (int m : arr) {
+            if (sum + m <= mx) {
+                sum += m;  
+            } else {
+                subarraydone++; 
+                sum = m;  
+                if (subarraydone > k) {
+                    return false; 
+                }
+            }
+        }
+
+        return true;  
+    }
+
+    int splitArray(vector<int>& arr, int k) {
+        int n = arr.size();
+        int start = *max_element(arr.begin(), arr.end());  
+        int sum = 0;
+        
+        for (int m : arr) {
+            sum += m;
+        }
+        int end = sum;
+        int res = -1;
+
+        if (n < k) {
+            return -1;  
+        }
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (isvalid(arr, n, k, mid)) {
+                res = mid; 
+                end = mid - 1;
+            } else {
+                start = mid + 1;  
+            }
+        }
+
+        return res; 
+    }
+};
+
+
+
+
+SIMILAR PROBLEM
+class Solution {
+public:
+    bool isvalid(vector<int>& arr, int n, int k, int mx) {
+    int wght= 1;  
+    int sum = 0; 
+
+    for (int m : arr) {
+        if (sum + m <= mx) {
+            sum += m;  
+        } else {
+            wght++;  
+            sum = m;  
+            if (wght > k) {
+                return false;  
+            }
+        }
+    }
+
+    return true; 
+}
+    int shipWithinDays(vector<int>& arr, int days) {
+    int n=arr.size();
+    int start = *max_element(arr.begin(), arr.end());  
+    int sum = 0;
+    for (int m : arr) {
+        sum += m;
+    }
+    int end = sum;  
+    int res = -1;
+
+    if (n < days) {
+        return -1;  
+    }
+
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (isvalid(arr, n, days, mid)) {
+            res = mid;  
+            end = mid - 1;
+        } else {
+               start = mid + 1;
+        }
+    }
+
+    return res;
+    }
+};

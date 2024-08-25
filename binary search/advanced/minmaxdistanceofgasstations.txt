@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool canPlaceStations(vector<int>& arr, int k, double maxDist) {
+    int count = 0;  // Number of additional stations needed
+    for (int i = 1; i < arr.size(); i++) {
+        int distance = arr[i] - arr[i - 1];
+        count += (int)(distance / maxDist);  // Calculate how many stations are needed for this segment
+        if (count > k) {
+            return false;  // Too many stations required
+        }
+    }
+    return true;  // It's possible to place stations within the maxDist
+}
+
+double minimiseMaxDistance(vector<int>& arr, int k) {
+    sort(arr.begin(), arr.end());  // Ensure the array is sorted
+    double start = 0;  // Smallest possible distance
+    double end = arr.back() - arr.front();  // Largest possible distance
+    double result = end;
+
+    while (end - start > 1e-6) {  // Continue until a certain precision is achieved
+        double mid = start + (end - start) / 2;
+
+        if (canPlaceStations(arr, k, mid)) {
+            result = mid;  // Valid configuration, try for a smaller maxDist
+            end = mid;
+        } else {
+            start = mid;  // Invalid configuration, increase the maxDist
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 8, 12};  // Example positions
+    int k = 2;  // Number of additional stations
+    double result = minimiseMaxDistance(arr, k);
+    
+    cout << "The minimum possible maximum distance: " << result << endl;
+
+    return 0;
+}
+
