@@ -1,0 +1,42 @@
+class Solution {
+  public:
+   
+  void frequencyCount(vector<int>& arr, int N, int p) {
+    vector<int> hash(p, 0);
+    for(int i = 0; i < N; i++) {
+        if(arr[i] >= 1 && arr[i] <= p) {
+            hash[arr[i] - 1]++;  
+        }
+    }
+
+    // Update the original array with the frequency counts
+    for(int i = 0; i < N; i++) {
+        if(i < p) {
+            arr[i] = hash[i];  
+        } else {
+            arr[i] = 0;  
+        }
+    }
+}
+};
+
+
+CHARACTER HASHING
+
+
+void characterHashing(const string& str) {
+    vector<int> hash(26, 0);
+
+    for(char ch : str) {
+        if(isalpha(ch)) {
+            char lowerCh = tolower(ch);
+            hash[lowerCh - 'a']++;
+        }
+    }
+
+    for(int i = 0; i < 26; i++) {
+        if(hash[i] > 0) {
+            cout << char(i + 'a') << ": " << hash[i] << endl;
+        }
+    }
+}

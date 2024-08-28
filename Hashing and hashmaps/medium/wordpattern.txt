@@ -1,0 +1,47 @@
+class Solution {
+public:
+   vector<string> split(string &s) {
+    vector<string> words;
+    string word;
+    stringstream ss(s); 
+
+    while (ss >> word) { 
+        words.push_back(word); 
+    }
+
+    return words;
+}
+
+    bool wordPattern(string pattern, string s) {
+        vector<string> words = split(s);
+        if (pattern.size() != words.size()) {
+            return false;
+        }
+
+        map<char, string> hash;
+        map<string, char> reverseHash;
+
+        for (int i = 0; i < pattern.size(); ++i) {
+            char c = pattern[i];
+            string word = words[i];
+
+            if (hash.find(c) != hash.end()) {
+                if (hash[c] != word) {
+                    return false;
+                }
+            } else {
+                hash[c] = word;
+            }
+
+            if (reverseHash.find(word) != reverseHash.end()) {
+                if (reverseHash[word] != c) {
+                    return false;
+                }
+            } else {
+                reverseHash[word] = c;
+            }
+        }
+
+        return true;
+    }
+};
