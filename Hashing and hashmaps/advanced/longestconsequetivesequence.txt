@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if (nums.empty()) return 0;
+
+        unordered_map<int, int> hash;
+        int maxcnt = 0;
+
+
+        for (int num : nums) {
+            hash[num] = 1;
+        }
+
+        for (const auto& it : hash) {
+           
+            if (hash.find(it.first - 1) == hash.end()) {
+                int cnt = 0;
+                int currentNum = it.first;
+
+           
+                while (hash.find(currentNum) != hash.end()) {
+                    cnt++;
+                    currentNum++;
+                }
+
+                maxcnt = max(maxcnt, cnt);
+            }
+        }
+
+        return maxcnt;
+    }
+};

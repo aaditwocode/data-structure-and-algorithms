@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> f(int n, vector<int>& result) {
+        if (n % 2 == 0) {
+            n /= 2;
+        } else if (n % 3 == 0) {
+            n /= 3;
+        } else if (n % 5 == 0) {
+            n /= 5;
+        } else {
+            return result;
+        }
+        
+        result.push_back(n);  
+        return result;
+    }
+
+    bool isUgly(int n) {
+        unordered_map<int, int> hash;
+        vector<int> result;
+
+        if (n <= 0) return false;
+        if(n == 1) return true;
+
+        while (hash[n] == 0) {
+            if (n == 1) return true; 
+
+            hash[n]++;
+            result = f(n, result);
+
+            if (result.empty()) break; 
+
+            n = result.back();
+        }
+
+        return n == 1;
+    }
+};

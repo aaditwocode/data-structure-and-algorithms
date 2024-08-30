@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> f(int n, vector<int>& result) {
+    int sum = 0;
+    while (n != 0) {
+        int s = n % 10;
+        sum += s * s;
+        n /= 10;
+    }
+    result.push_back(sum);
+    return result;
+}
+
+    bool isHappy(int n) {
+    unordered_map<int, int> hash;
+    vector<int> result;
+
+    while (n != 1 && hash[n] == 0) {
+        hash[n]++;
+        result = f(n, result);
+        n = result.back();
+    }
+
+    return n == 1;
+}
+};
