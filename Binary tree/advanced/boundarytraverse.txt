@@ -1,0 +1,83 @@
+/* A binary tree Node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+class Solution {
+public:
+    
+    void f1(Node* root, queue<Node*>& q) {
+        Node* curr = root->left;
+        while (curr) {
+            if (!isLeaf(curr)) q.push(curr);  // Add non-leaf left boundary nodes
+            if (curr->left) curr = curr->left;
+            else curr = curr->right;
+        }
+    }
+
+   
+    void f2(Node* root, stack<Node*>& s) {
+        Node* curr = root->right;
+        while (curr) {
+            if (!isLeaf(curr)) s.push(curr);  // Add non-leaf right boundary nodes
+            if (curr->right) curr = curr->right;
+            else curr = curr->left;
+        }
+    }
+
+
+    void addLeaves(Node* root, vector<int>& res) {
+        if (isLeaf(root)) {
+            res.push_back(root->data);
+            return;
+        }
+        if (root->left) addLeaves(root->left, res);
+        if (root->right) addLeaves(root->right, res);
+    }
+
+    bool isLeaf(Node* root) {
+        return !root->left && !root->right;
+    }
+
+ 
+    vector<int> boundary(Node* root) {
+        vector<int> res;
+        if (!root) return res;
+
+        // Add root node if it's not a leaf
+        if (!isLeaf(root)) res.push_back(root->data);
+
+        // Queue for left boundary nodes
+        queue<Node*> q;
+        f1(root, q);
+
+        // Stack for right boundary nodes
+        stack<Node*> s;
+        f2(root, s);
+
+        // Add left boundary nodes from the queue to the result
+        while (!q.empty()) {
+            res.push_back(q.front()->data);
+            q.pop();
+        }
+
+        // Add leaf nodes
+        addLeaves(root, res);
+
+        // Add right boundary nodes from the stack to the result (reverse order)
+        while (!s.empty()) {
+            res.push_back(s.top()->data);
+            s.pop();
+        }
+
+        return res;
+    }
+};
+
+
+// Function f1 to add left boundary nodes (excluding leaves) into a queue
+ // Function f2 to add right boundary nodes (excluding leaves) into a stack
+     // Helper function to add leaf nodes (in-order traversal)
+     // Utility function to check if a node is a leaf

@@ -10,13 +10,6 @@
  * };
  */
 class Solution {
-public:
-    int maxPathSum(TreeNode* root) {
-        int maxSum = INT_MIN;
-        maxPathSumHelper(root, maxSum);
-        return maxSum;
-    }
-    
 private:
     int maxPathSumHelper(TreeNode* node, int &maxSum) {
         if (node == nullptr) return 0;
@@ -29,5 +22,12 @@ private:
         
         // Return the maximum path sum including the current node
         return node->val + max(leftMax, rightMax);
+    }
+
+    public:
+    int maxPathSum(TreeNode* root) {
+        int maxSum = INT_MIN;
+        maxPathSumHelper(root, maxSum);
+        return maxSum;
     }
 };
