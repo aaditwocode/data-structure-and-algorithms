@@ -1,0 +1,45 @@
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+// This function should return head to the DLL
+class Solution {
+  public:
+    Node* head = nullptr;
+    Node* lastnode = nullptr;
+
+    void help(Node* root) {
+        if (!root) return;
+
+        help(root->left);
+
+        if (!head) {
+            head = root;  
+        }
+
+        if (lastnode) {
+            lastnode->right = root;  
+        }
+
+        root->left = lastnode;  
+        lastnode = root; 
+
+        help(root->right);
+    }
+
+    Node* bToDLL(Node* root) {
+        head = lastnode = nullptr; 
+        help(root);
+        return head;  
+    }
+};
