@@ -1,0 +1,63 @@
+root to leaf
+
+class Solution {
+  public:
+  void findPaths(Node* root, vector<int> &path, vector<vector<int>> &ans) {
+      if (root == nullptr) return;
+      
+      path.push_back(root->data);
+      
+      if (root->left == nullptr && root->right == nullptr) {
+          ans.push_back(path);
+      } else {
+          if (root->left) {
+              findPaths(root->left, path, ans);
+          }
+          if (root->right) {
+              findPaths(root->right, path, ans);
+          }
+      }
+      
+      path.pop_back();
+  }
+    
+  vector<vector<int>> Paths(Node* root) {
+      vector<vector<int>> ans;
+      vector<int> path;
+      
+      findPaths(root, path, ans);
+      
+      return ans;
+  }
+};
+
+root to Node
+
+class Solution {
+  public:
+  bool findPathToTarget(Node* root, int target, vector<int> &path) {
+      if (root == nullptr) return false;
+      
+      path.push_back(root->data);
+      
+      if (root->data == target) return true;
+      
+      if ((root->left && findPathToTarget(root->left, target, path)) ||
+          (root->right && findPathToTarget(root->right, target, path))) {
+          return true;
+      }
+      
+      path.pop_back();
+      return false;
+  }
+    
+  vector<int> pathToNode(Node* root, int target) {
+      vector<int> path;
+      
+      if (findPathToTarget(root, target, path)) {
+          return path;
+      }
+      
+      return {};
+  }
+};
