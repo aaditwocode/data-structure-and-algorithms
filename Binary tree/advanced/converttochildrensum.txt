@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    void changeTree(TreeNode* root) {
+        if (!root) return;
+
+        changeTree(root->left);
+        changeTree(root->right);
+
+        int childSum = 0;
+        if (root->left) childSum += root->left->val;
+        if (root->right) childSum += root->right->val;
+
+        if (childSum >= root->val) {
+            root->val = childSum;
+        } else {
+            if (root->left) root->left->val = root->val;
+            if (root->right) root->right->val = root->val;
+        }
+    }
+};
+
+
