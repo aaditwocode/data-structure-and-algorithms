@@ -1,0 +1,30 @@
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+
+    Node* inOrderSuccessor(Node* root, Node* x) {
+        Node* successor = nullptr;
+
+        while (root != nullptr) {
+            if (root->data > x->data) {
+                successor = root;
+                root = root->left;
+            } else {
+                root = root->right;
+            }
+        }
+
+        return successor;
+    }
+};
