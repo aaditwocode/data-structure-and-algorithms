@@ -1,0 +1,29 @@
+class Solution {
+public:
+    long long findKthSmallest(long long A[], long long N, long long K) {
+        priority_queue<long long> maxheap;
+
+        for (long long i = 0; i < N; i++) {
+            maxheap.push(A[i]);
+            if (maxheap.size() > K) {
+                maxheap.pop();
+            }
+        }
+
+        return maxheap.top();
+    }
+
+    long long sumBetweenTwoKth(long long A[], long long N, long long K1, long long K2) {
+        long long K1th = findKthSmallest(A, N, K1);
+        long long K2th = findKthSmallest(A, N, K2);
+
+        long long sum = 0;
+        for (long long i = 0; i < N; i++) {
+            if (A[i] > K1th && A[i] < K2th) {
+                sum += A[i];
+            }
+        }
+
+        return sum;
+    }
+};

@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long minCost(vector<long long>& arr) {
+        priority_queue<long long, vector<long long>, greater<long long>> minheap;
+        for (long long i : arr) {
+            minheap.push(i);
+        }
+        
+        long long ans = 0, sum = 0;
+
+        while (minheap.size() > 1) {
+            long long k = minheap.top();
+            minheap.pop();
+            long long y = minheap.top();
+            minheap.pop();
+            sum = k + y;
+            minheap.push(sum);
+            ans += sum;
+        }
+        
+        return ans;
+    }
+};
