@@ -1,0 +1,40 @@
+class Solution
+{
+public:
+    struct Element {
+        int value;
+        int arrIndex;
+        int elementIndex;
+     
+        bool operator>(const Element &other) const {
+            return value > other.value;
+        }
+    };
+
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        priority_queue<Element, vector<Element>, greater<Element>> minHeap;
+        vector<int> result;
+
+        for (int i = 0; i < K; i++) {
+            if (!arr[i].empty()) {
+                minHeap.push({arr[i][0], i, 0});
+            }
+        }
+
+      
+        while (!minHeap.empty()) {
+            Element current = minHeap.top();
+            minHeap.pop();
+
+            result.push_back(current.value);
+
+  
+            if (current.elementIndex + 1 < arr[current.arrIndex].size()) {
+                minHeap.push({arr[current.arrIndex][current.elementIndex + 1], current.arrIndex, current.elementIndex + 1});
+            }
+        }
+
+        return result;
+    }
+};
