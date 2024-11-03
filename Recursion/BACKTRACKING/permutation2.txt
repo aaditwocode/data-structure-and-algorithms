@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> result;
+        vector<int> temp;
+        unordered_map<int, int> countMap;  
+
+        for (int num : nums) {
+            countMap[num]++;
+        }
+
+        solve(temp, nums.size(), result, countMap);
+        return result;
+    }
+
+private:
+    void solve(vector<int>& temp, int n, vector<vector<int>>& result, unordered_map<int, int>& countMap) {
+        if (temp.size() == n) {
+            result.push_back(temp);
+            return;
+        }
+
+        
+        for (auto it = countMap.begin(); it != countMap.end(); ++it) {
+            int num = it->first;
+            int& count = it->second;  
+
+            if (count > 0) { 
+                temp.push_back(num);
+                count--; 
+
+                solve(temp, n, result, countMap);
+
+                temp.pop_back(); 
+                count++; 
+            }
+        }
+    }
+};
