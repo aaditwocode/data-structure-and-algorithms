@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> result;
+        vector<int> temp;
+        solve(result, temp, 0, nums); 
+        return result;
+    }
+
+private:
+    void solve(vector<vector<int>>& result, vector<int>& temp, int i, vector<int>& nums) {
+
+        if (i == nums.size()) {
+            result.push_back(temp);
+            return;
+        }
+
+        temp.push_back(nums[i]);
+        solve(result, temp, i + 1, nums);
+        
+        temp.pop_back();
+        solve(result, temp, i + 1, nums);
+    }
+};
