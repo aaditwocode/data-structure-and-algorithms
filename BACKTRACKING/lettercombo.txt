@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if (digits.empty()) return {};
+        
+        vector<string> result;
+        string temp = "";
+        
+        
+        unordered_map<char, string> keypad = {
+            {'2', "abc"}, {'3', "def"}, {'4', "ghi"}, {'5', "jkl"},
+            {'6', "mno"}, {'7', "pqrs"}, {'8', "tuv"}, {'9', "wxyz"}
+        };
+
+        solve(result, temp, 0, digits, keypad);
+        return result;
+    }
+
+private:
+    void solve(vector<string>& result, string& temp, int idx, string& digits, unordered_map<char, string>& keypad) {
+  
+        if (idx == digits.size()) {
+            result.push_back(temp);
+            return;
+        }
+
+        char ch = digits[idx];
+        string str = keypad[ch];
+
+        for (char letter : str) {
+            temp.push_back(letter);       
+            solve(result, temp, idx + 1, digits, keypad); 
+            temp.pop_back();             
+        }
+    }
+};
