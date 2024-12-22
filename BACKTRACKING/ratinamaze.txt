@@ -1,0 +1,33 @@
+class Solution {
+private:
+    bool isvalid(int i, int j, vector<vector<int>> &mat) {
+        int n = mat.size();
+        return (i >= 0 && i < n && j >= 0 && j < n && mat[i][j] == 1);
+    }
+
+    void solve(int idx, int jdx, string temp, vector<string> &result, vector<vector<int>> &mat) {
+        int n = mat.size();
+        if (idx == n - 1 && jdx == n - 1) {
+            result.push_back(temp);
+            return;
+        }
+        if (isvalid(idx, jdx, mat)) {
+            mat[idx][jdx] = 0;
+            solve(idx, jdx - 1, temp + 'L', result, mat);
+            solve(idx, jdx + 1, temp + 'R', result, mat);
+            solve(idx + 1, jdx, temp + 'D', result, mat);
+            solve(idx - 1, jdx, temp + 'U', result, mat);
+            mat[idx][jdx] = 1;
+        }
+    }
+
+public:
+    vector<string> findPath(vector<vector<int>> &mat) {
+        vector<string> result;
+        if (mat.empty() || mat[0][0] == 0 || mat[mat.size() - 1][mat.size() - 1] == 0) {
+            return result;
+        }
+        solve(0, 0, "", result, mat);
+        return result;
+    }
+};
