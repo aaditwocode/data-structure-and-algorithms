@@ -1,0 +1,19 @@
+MEMOIAZTION+REC
+
+class Solution {
+ private:
+    int f(int idx, vector<int>& cost, vector<int>& dp, int n) {
+        if (idx >= n - 1) return 0;
+        if (dp[idx] != -1) return dp[idx];
+        int oneStep = abs(cost[idx + 1] - cost[idx]) + f(idx + 1, cost, dp, n);
+        int twoStep = (idx + 2 < n) ? abs(cost[idx + 2] - cost[idx]) + f(idx + 2, cost, dp, n) : INT_MAX;
+        dp[idx] = min(oneStep, twoStep);
+        return dp[idx];
+    }
+    
+ public:
+    int minimumEnergy(vector<int>& cost, int n) {
+        vector<int> dp(n, -1);
+        return f(0, cost, dp, n);
+    }
+};
