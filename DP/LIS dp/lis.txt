@@ -1,0 +1,47 @@
+MEMOMIZATION+REC
+
+class Solution {
+private:
+    int f(int idx, int previdx, vector<int>& nums, vector<vector<int>>& dp) {
+        if (idx >= nums.size()) return 0; 
+
+        if (dp[idx][previdx + 1] != -1) return dp[idx][previdx + 1]; 
+
+        int skip = f(idx + 1, previdx, nums, dp);
+
+        int take = 0;
+        if (previdx == -1 || nums[idx] > nums[previdx]) {
+            take = 1 + f(idx + 1, idx, nums, dp);
+        }
+
+        return dp[idx][previdx + 1] = max(skip, take);
+    }
+
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+        return f(0, -1, nums, dp); 
+    }
+};
+
+
+BOTTOM UP
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size(); 
+        vector<int> t(n, 1);
+        int maxL = 1;
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<i; j++) {
+                if(nums[j] < nums[i]) {
+                    t[i] = max(t[i], t[j]+1);
+                    maxL = max(maxL, t[i]);
+                }
+            }
+        }
+        
+        return maxL;
+    }
+};

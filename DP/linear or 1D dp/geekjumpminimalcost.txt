@@ -1,0 +1,22 @@
+MEMOIAZTION+REC
+
+class Solution {
+ private:
+    int f(int idx, vector<int>& cost, vector<int>& dp, int n, int k) {
+        if (idx == n - 1) return 0;
+        if (dp[idx] != -1) return dp[idx];
+        int minCost = INT_MAX;
+        for (int step = 1; step <= k && idx + step < n; ++step) {
+            minCost = min(minCost, abs(cost[idx + step] - cost[idx]) + f(idx + step, cost, dp, n, k));
+        }
+        dp[idx] = minCost;
+        return dp[idx];
+    }
+
+ public:
+    int minimizeCost(int k, vector<int>& cost) {
+        int n = cost.size();
+        vector<int> dp(n, -1);
+        return f(0, cost, dp, n, k);
+    }
+};
