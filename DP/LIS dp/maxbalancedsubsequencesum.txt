@@ -1,0 +1,35 @@
+class Solution {
+public:
+    long maxBalancedSubsequenceSum(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++) {
+            arr[i] = nums[i] - i;
+        }
+        
+        map<int, long> map;
+        long ans = INT_MIN;
+        
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= 0) {
+                ans = max(ans, (long)nums[i]);
+            } else {
+                long temp = nums[i];
+                auto it = map.lower_bound(arr[i]);
+                if (it != map.begin()) {
+                    --it;
+                    temp += it->second;
+                }
+                auto it2 = map.upper_bound(arr[i]);
+                while (it2 != map.end() && it2->second < temp) {
+                    it2 = map.erase(it2);
+                }
+                if (map.lower_bound(arr[i]) == map.end() || map.lower_bound(arr[i])->second < temp) {
+                    map[arr[i]] = temp;
+                }
+                ans = max(ans, temp);
+            }
+        }
+        return ans;
+    }
+}; 

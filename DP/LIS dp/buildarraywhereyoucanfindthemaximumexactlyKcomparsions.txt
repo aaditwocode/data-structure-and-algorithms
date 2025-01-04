@@ -1,0 +1,27 @@
+MEMOMIZATION+REC
+
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+
+    int f(int idx, int sc, int maxsofar, int n, int m, int k, vector<vector<vector<int>>>& dp) {
+        if (sc > k || maxsofar > m) return 0; 
+        if (idx == n) return sc == k ? 1 : 0;
+        if (dp[idx][sc][maxsofar] != -1) return dp[idx][sc][maxsofar];
+
+        int result = 0;
+        for (int i = 1; i <= m; i++) {
+            if (i > maxsofar) {
+                result = (result + f(idx + 1, sc + 1, i, n, m, k, dp)) % MOD;
+            } else {
+                result = (result + f(idx + 1, sc, maxsofar, n, m, k, dp)) % MOD;
+            }
+        }
+        return dp[idx][sc][maxsofar] = result;
+    }
+
+    int numOfArrays(int n, int m, int k) {
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(k + 1, vector<int>(m + 1, -1)));
+        return f(0, 0, 0, n, m, k, dp);
+    }
+};

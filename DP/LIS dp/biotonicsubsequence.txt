@@ -1,0 +1,54 @@
+BOTTOM UP 
+
+class Solution {
+private:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size(); 
+        vector<int> t(n, 1);  
+        int maxL = 1; 
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    t[i] = max(t[i], t[j] + 1);
+                    maxL = max(maxL, t[i]);
+                }
+            }
+        }
+        
+        return maxL;
+    }
+
+public:
+    int LongestBitonicSequence(int n, vector<int>& nums) {
+        if (n == 0) return 0;
+
+        vector<int> lis_start(n, 1);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    lis_from_start[i] = max(lis_start[i], lis_start[j] + 1);
+                }
+            }
+        }
+
+        vector<int> lis_end(n, 1);
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = n - 1; j > i; j--) {
+                if (nums[j] < nums[i]) {
+                    lis_end[i] = max(lis_end[i], lis_end[j] + 1);
+                }
+            }
+        }
+
+        int maxBitonicLength = 0;
+        for (int i = 0; i < n; i++) {
+            if (lis_from_start[i] > 1 && lis_from_end[i] > 1) {
+                maxBitonicLength = max(maxBitonicLength, lis_start[i] + lis_end[i] - 1);
+            }
+        }
+
+        return maxBitonicLength;
+    }
+};
+
