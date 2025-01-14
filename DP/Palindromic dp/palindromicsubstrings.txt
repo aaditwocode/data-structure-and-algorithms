@@ -1,0 +1,65 @@
+REC+MEMOIZATION
+class Solution {
+private:
+    bool check(int i, int j, string& s, vector<vector<int>>& dp) {
+        if (i > j) return true;  
+        if (dp[i][j] != -1) return dp[i][j];  
+        if (s[i] == s[j]) {
+            dp[i][j] = check(i + 1, j - 1, s, dp);  
+        } else {
+            dp[i][j] = false; 
+        }
+        return dp[i][j];
+    }
+
+    int f(string& s, vector<vector<int>>& dp) {
+        int count = 0;
+        int n = s.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) { 
+                if (check(i, j, s, dp)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+public:
+    int countSubstrings(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));  
+        return f(s, dp);
+    }
+};
+
+
+BLUEPRINT+BOTTOM UP APPROACH
+ //t[i][j] = true : s[i:j] is a substring where i and j are inclusive indices
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n = s.length();
+        vector<vector<bool>> t(n, vector<bool>(n, false));
+
+        int count = 0;
+
+        for(int L = 1; L <= n; L++) {
+            for(int i = 0; i+L <= n; i++) {
+                int j = i + L - 1;
+
+                if(i == j) {
+                    t[i][i] = true; 
+                } else if(i+1 == j) {
+                    t[i][j] = (s[i] == s[j]); 
+                } else {
+                    t[i][j] = ((s[i] == s[j]) && t[i+1][j-1] == true);
+                }
+
+                count += t[i][j];
+            }
+        }
+
+        return count;
+    }
+};

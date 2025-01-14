@@ -1,0 +1,27 @@
+REC+MEMOMIZATION
+class Solution {
+public:
+    int m, n;
+
+    int solve(string &s1, string &s2, int i, int j, vector<vector<int>> &dp) {
+        if (j == n) return 1; 
+        if (i == m) return 0; 
+
+        if (dp[i][j] != -1) return dp[i][j]; 
+
+        if (s1[i] == s2[j]) {
+      
+            return dp[i][j] = solve(s1, s2, i + 1, j + 1, dp) + solve(s1, s2, i + 1, j, dp);
+        }
+
+        
+        return dp[i][j] = solve(s1, s2, i + 1, j, dp);
+    }
+
+    int numDistinct(string s, string t) {
+        m = s.length();
+        n = t.length();
+        vector<vector<int>> dp(m, vector<int>(n, -1)); 
+        return solve(s, t, 0, 0, dp);
+    }
+};
