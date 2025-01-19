@@ -1,0 +1,38 @@
+REC+MEMOIZATION
+class Solution {
+public:
+    unordered_set<string> st;
+    int n;
+    
+    bool solve(string &s, int idx, vector<int>& t) {
+         if(idx == n) {
+            return true;
+        }
+
+        if(st.find(s.substr(idx, n - idx)) != st.end()) {
+            return true;
+        }
+        
+        if(t[idx] != -1)
+            return t[idx];
+        
+        for(int l = 1; l <= n; l++) {
+            string temp = s.substr(idx, l);
+            if(st.find(temp) != st.end() && solve(s, idx + l, t))
+                return t[idx] = true;
+        }
+        
+        return t[idx] = false;
+    }
+    
+    bool wordBreak(string s, vector<string>& wordDict) {
+        n = s.length();
+        vector<int> t(n, -1);
+        
+        for(string &word : wordDict) {
+            st.insert(word);
+        }
+        
+        return solve(s, 0, t);
+    }
+};

@@ -1,0 +1,23 @@
+BOTTOM UP
+
+int minDeletions(string str, int n) { 
+     vector<vector<int>> t(n, vector<int>(n));
+
+        for(int i = 0; i < n; i++) {
+            t[i][i] = 0;
+        }
+
+         for(int L = 2; L<=n; L++) {
+            for(int i = 0; i < n-L+1; i++) {
+                int j = i + L - 1;
+
+                if(str[i] == str[j]) {
+                    t[i][j] = 0 + t[i+1][j-1];
+                } else {
+                    t[i][j] = 1+min(t[i][j-1], t[i+1][j]);
+                }
+            }
+        }
+
+        return t[0][n-1]; 
+}
