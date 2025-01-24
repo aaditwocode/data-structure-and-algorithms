@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        int totalSum = 0;
+        for (int stone : stones) {
+            totalSum += stone;
+        }
+
+        int n = stones.size();
+        int target = totalSum / 2;
+        
+        // DP table for subset sum
+        vector<vector<bool>> dp(n + 1, vector<bool>(target + 1, false));
+        
+        // Initialize base cases
+        for (int i = 0; i <= n; ++i) {
+            dp[i][0] = true; // A sum of 0 is always possible
+        }
+        
+        // Fill the DP table
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= target; ++j) {
+                if (stones[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - stones[i - 1]];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        
+        // Find the largest sum closest to totalSum / 2
+        int maxSubsetSum = 0;
+        for (int j = target; j >= 0; --j) {
+            if (dp[n][j]) {
+                maxSubsetSum = j;
+                break;
+            }
+        }
+
+        // Calculate the minimum difference
+        return totalSum - 2 * maxSubsetSum;
+    }
+};
