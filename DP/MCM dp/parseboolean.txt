@@ -1,0 +1,50 @@
+#define ll long long
+const int mod = 1000000007;
+
+class Solution {
+private:
+    int solve(int i, int j, int isTrue, string &exp, vector<vector<vector<int>>> &dp) {
+        if (i > j) return 0;
+
+        if (i == j) {
+            dp[i][j][isTrue] = (isTrue ? (exp[i] == 'T') : (exp[i] == 'F'));
+            return dp[i][j][isTrue];
+        }
+
+        if (dp[i][j][isTrue] != -1) return dp[i][j][isTrue];
+
+        ll ways = 0;
+
+        for (int k = i + 1; k < j; k += 2) {
+            if (dp[i][k - 1][1] == -1) dp[i][k - 1][1] = solve(i, k - 1, 1, exp, dp);
+            if (dp[i][k - 1][0] == -1) dp[i][k - 1][0] = solve(i, k - 1, 0, exp, dp);
+            if (dp[k + 1][j][1] == -1) dp[k + 1][j][1] = solve(k + 1, j, 1, exp, dp);
+            if (dp[k + 1][j][0] == -1) dp[k + 1][j][0] = solve(k + 1, j, 0, exp, dp);
+
+            ll lt = dp[i][k - 1][1], lf = dp[i][k - 1][0];
+            ll rt = dp[k + 1][j][1], rf = dp[k + 1][j][0];
+
+            if (exp[k] == '&') {
+                if (isTrue) ways = (ways + (lt * rt) % mod) % mod;
+                else ways = (ways + (lf * rt) % mod + (lt * rf) % mod + (lf * rf) % mod) % mod;
+            } 
+            else if (exp[k] == '|') {
+                if (isTrue) ways = (ways + (lt * rt) % mod + (lf * rt) % mod + (lt * rf) % mod) % mod;
+                else ways = (ways + (lf * rf) % mod) % mod;
+            } 
+            else {  // XOR operator
+                if (isTrue) ways = (ways + (lf * rt) % mod + (lt * rf) % mod) % mod;
+                else ways = (ways + (lt * rt) % mod + (lf * rf) % mod) % mod;
+            }
+        }
+        return dp[i][j][isTrue] = ways;
+    }
+
+public:
+    int evaluateExp(string  expression) {
+        int n =  expression.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, -1)));
+        return solve(0, n - 1, 1,  expression, dp);
+    }
+};
+

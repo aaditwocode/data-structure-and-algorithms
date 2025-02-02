@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+
+    int solve(int e, int f) {
+        if (f == 0 || f == 1) return f;
+        if (e == 1) return f;
+
+        if (dp[e][f] != -1) return dp[e][f];
+
+        int ans = INT_MAX;
+        
+        for (int k = 1; k <= f; k++) {
+            int breakCase = solve(e - 1, k - 1);  
+            int noBreakCase = solve(e, f - k);    
+
+            int temp = 1 + max(breakCase, noBreakCase);
+            ans = min(ans, temp);
+        }
+
+        return dp[e][f] = ans;
+    }
+
+    int superEggDrop(int k, int n) {
+        dp.resize(k + 1, vector<int>(n + 1, -1));
+        return solve(k, n);
+    }
+};

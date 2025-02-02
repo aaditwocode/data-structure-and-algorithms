@@ -1,0 +1,35 @@
+bool isPalindrome(const string& s, int start, int end) {
+    while (start < end) {
+        if (s[start] != s[end])
+            return false;
+        start++;
+        end--;
+    }
+    return true;
+}
+
+
+int solve(const string& s, int i, int j, vector<vector<int>>& dp) {
+
+    if (i >= j || isPalindrome(s, i, j))
+        return 0;
+
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    int ans = INT_MAX;
+    for (int k = i; k < j; k++) {
+        int temp = solve(s, i, k, dp) + solve(s, k + 1, j, dp) + 1;
+        ans = min(ans, temp);
+    }
+
+    dp[i][j] = ans ;
+    return dp[i][j];
+}
+
+int minCutPalindrome(string s) {
+    int n = s.length();
+    vector<vector<int>> dp(n, vector<int>(n, -1));  
+
+    return solve(s, 0, n - 1, dp); 
+}
