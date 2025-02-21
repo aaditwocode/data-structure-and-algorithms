@@ -1,0 +1,42 @@
+REC+MEMOMIZATION
+
+class Solution {
+private:
+    int solve(int i, int j, int m, int n, vector<vector<int>>& dp, vector<vector<int>>& matrix, int prev) {
+      
+        if (i < 0 || i >= m || j < 0 || j >= n || matrix[i][j] <= prev) {
+            return 0;
+        }
+  
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+     
+        int right = solve(i + 1, j, m, n, dp, matrix, matrix[i][j]);
+        int down = solve(i, j + 1, m, n, dp, matrix, matrix[i][j]);
+        int left = solve(i - 1, j, m, n, dp, matrix, matrix[i][j]);
+        int up = solve(i, j - 1, m, n, dp, matrix, matrix[i][j]);
+      
+        dp[i][j] = 1 + max({right, down, left, up});
+        
+        return dp[i][j];
+    }
+    
+public:
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        if (m == 0) return 0;
+        int n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        
+        int maxPath = 0;
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                maxPath = max(maxPath, solve(i, j, m, n, dp, matrix, INT_MIN));
+            }
+        }
+        
+        return maxPath;
+    }
+};

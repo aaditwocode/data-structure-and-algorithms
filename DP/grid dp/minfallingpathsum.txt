@@ -1,0 +1,33 @@
+rec+memoization
+
+class Solution {
+public:
+    int n;
+    vector<vector<int>> dp;
+
+    int solve(vector<vector<int>>& matrix, int r, int c) {
+        if (c < 0 || c >= n) return INT_MAX; 
+        if (r == n - 1) return matrix[r][c]; 
+
+        if (dp[r][c] != INT_MAX) return dp[r][c]; 
+
+        int down = solve(matrix, r + 1, c);
+        int downLeft = solve(matrix, r + 1, c - 1);
+        int downRight = solve(matrix, r + 1, c + 1);
+
+        return dp[r][c] = matrix[r][c] + min({down, downLeft, downRight});
+    }
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        n = matrix.size();
+        dp.assign(n, vector<int>(n, INT_MAX)); 
+
+        int ans = INT_MAX;
+       
+        for (int c = 0; c < n; ++c) {
+            ans = min(ans, solve(matrix, 0, c));
+        }
+
+        return ans;
+    }
+};
