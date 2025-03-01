@@ -1,0 +1,28 @@
+
+class Solution {
+public:
+    unordered_map<TreeNode*, int> dp;
+
+    int solve(TreeNode* root, int* res) {
+        if (!root) return 0;
+        if (dp.find(root) != dp.end()) return dp[root];
+
+        int leftChild = solve(root->left, res);
+        int rightChild = solve(root->right, res);
+        
+        int leftGrand = root->left ? solve(root->left->left, res) + solve(root->left->right, res) : 0;
+        int rightGrand = root->right ? solve(root->right->left, res) + solve(root->right->right, res) : 0;
+
+        int temp = leftChild + rightChild;
+        int ans = max(temp, root->val + leftGrand + rightGrand);
+        *res = max(*res, ans);
+        
+        return dp[root] = ans;
+    }
+
+    int rob(TreeNode* root) {
+        int res = 0;
+        solve(root, &res);
+        return res;
+    }
+};

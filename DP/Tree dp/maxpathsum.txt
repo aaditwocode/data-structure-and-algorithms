@@ -1,0 +1,53 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    Node(int val) {
+        data = val;
+        left = right = nullptr;
+    }
+};
+
+unordered_map<Node*, int> sumMap;
+
+int getMaxPathSum(Node* root) {
+    if (root == nullptr) return 0;
+    if (sumMap.find(root) != sumMap.end()) return sumMap[root];
+    int leftSum = max(0, getMaxPathSum(root->left));
+    int rightSum = max(0, getMaxPathSum(root->right));
+    return sumMap[root] = root->data + max(leftSum, rightSum);
+}
+
+int solve(Node* root, int* res) {
+    if (root == nullptr) return 0;
+    int leftSum = getMaxPathSum(root->left);
+    int rightSum = getMaxPathSum(root->right);
+    int temp = root->data + max(0, max(leftSum, rightSum));
+    int ans = max(temp, root->data + leftSum + rightSum);
+    *res = max(*res, ans);
+    return temp;
+}
+
+int maxPathSum(Node* root) {
+    int res = INT_MIN;
+    solve(root, &res);
+    return res;
+}
+
+int main() {
+    Node* root = new Node(10);
+    root->left = new Node(2);
+    root->right = new Node(10);
+    root->left->left = new Node(20);
+    root->left->right = new Node(1);
+    root->right->right = new Node(-25);
+    root->right->right->left = new Node(3);
+    root->right->right->right = new Node(4);
+
+    cout << maxPathSum(root) << endl;
+    return 0;
+}

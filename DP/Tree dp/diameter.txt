@@ -1,0 +1,49 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    Node(int val) {
+        data = val;
+        left = right = nullptr;
+    }
+};
+
+unordered_map<Node*, int> heightMap;
+
+int getHeight(Node* root) {
+    if (root == nullptr) return 0;
+    if (heightMap.find(root) != heightMap.end()) return heightMap[root];
+    return heightMap[root] = 1 + max(getHeight(root->left), getHeight(root->right));
+}
+
+int solve(Node* root, int* res) {
+    if (root == nullptr) return 0;
+    int l = getHeight(root->left);
+    int r = getHeight(root->right);
+    int temp = max(l, r) + 1;
+    int ans = max(temp, 1 + l + r);
+    *res = max(*res, ans);
+    return temp;
+}
+
+int diameter(Node* root) {
+    int res = 0;
+    solve(root, &res);
+    return res;
+}
+
+int main() {
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->right = new Node(6);
+
+    cout << diameter(root) << endl;
+    return 0;
+}
