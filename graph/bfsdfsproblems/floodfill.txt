@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        if (image.empty() || image[0].empty()) return image;
+
+        int m = image.size();
+        int n = image[0].size();
+        int originalColor = image[sr][sc];
+
+        if (originalColor == color) return image;
+
+        vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        dfs(image, sr, sc, originalColor, color, directions, m, n);
+
+        return image;
+    }
+
+private:
+    void dfs(vector<vector<int>>& image, int i, int j, int originalColor, int newColor, vector<pair<int, int>>& directions, int m, int n) {
+        if (i < 0 || i >= m || j < 0 || j >= n || image[i][j] != originalColor) {
+            return;
+        }
+
+        image[i][j] = newColor;
+
+        for (auto& dir : directions) {
+            int x = i + dir.first;
+            int y = j + dir.second;
+            dfs(image, x, y, originalColor, newColor, directions, m, n);
+        }
+    }
+};

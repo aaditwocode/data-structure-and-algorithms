@@ -27,11 +27,6 @@ void addEdge(vector <int> adj[], int u, int v) {
     adj[v].push_back(u);
 }
 
-void printAns(vector <int> &ans) {
-    for (int i = 0; i < ans.size(); i++) {
-        cout << ans[i] << " ";
-    }
-}
 
 int main() 
 {
@@ -44,7 +39,7 @@ int main()
 
     Solution obj;
     vector <int> ans = obj.dfsOfGraph(5, adj);
-    printAns(ans);
+  
 
     return 0;
 }

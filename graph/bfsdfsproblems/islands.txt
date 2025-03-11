@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        if (grid.empty() || grid[0].empty()) return 0;
+
+        int m = grid.size();
+        int n = grid[0].size();
+        int islandCount = 0;
+
+        vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j, directions);
+                    islandCount++;
+                }
+            }
+        }
+
+        return islandCount;
+    }
+
+private:
+    void dfs(vector<vector<char>>& grid, int row, int col, vector<pair<int, int>>& directions) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        grid[row][col] = '0';
+
+        for (auto& dir : directions) {
+            int newRow = row + dir.first;
+            int newCol = col + dir.second;
+
+            if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && grid[newRow][newCol] == '1') {
+                dfs(grid, newRow, newCol, directions);
+            }
+        }
+    }
+};
