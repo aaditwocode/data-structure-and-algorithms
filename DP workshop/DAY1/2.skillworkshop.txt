@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> time, skill;
+int n, m, x;
+vector<vector<vector<int>>> dp;
+
+int rec(int idx, int currTime, int itemsTaken) {
+   
+    if (idx == n || currTime >= m || itemsTaken >= x) return 0;
+
+    if (dp[idx][currTime][itemsTaken] != -1) return dp[idx][currTime][itemsTaken];
+
+    int notTake = rec(idx + 1, currTime, itemsTaken);
+    int take = 0;
+    if (currTime + time[idx] < m && itemsTaken + 1 < x) {
+        take = skill[idx] + rec(idx + 1, currTime + time[idx], itemsTaken + 1);
+    }
+
+    return dp[idx][currTime][itemsTaken] = max(take, notTake);
+}
+
+void solve() {
+    cin >> n >> m >> x;
+    time.resize(n);
+    skill.resize(n);
+    
+    for (int i = 0; i < n; ++i) cin >> time[i];
+    for (int i = 0; i < n; ++i) cin >> skill[i];
+
+    dp.assign(n + 1, vector<vector<int>>(m + 1, vector<int>(x + 1, -1)));
+
+    int result = rec(0, 0, 0);
+    cout << "Maximum Skill: " << result << endl;
+}
+
+int main() {
+    solve();
+    return 0;
+}
