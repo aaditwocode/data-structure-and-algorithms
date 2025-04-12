@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> x;
+int n, t;
+vector<vector<int>> dp;
+
+int rec(int idx, int taken) {
+    if (taken > t) return 0;
+
+    if (idx == n) {
+        return taken == t ? 1 : 0;
+    }
+
+    if (dp[idx][taken] != -1) return dp[idx][taken];
+
+    int dontTake = rec(idx + 1, taken);
+
+    int take = 0;
+    if (taken + x[idx] <= t) {
+        take = rec(idx + 1, taken + x[idx]);
+    }
+
+    return dp[idx][taken] = max(take, dontTake);
+}
+
+void solve() {
+    cin >> n;
+    x.resize(n);
+    for (int i = 0; i < n; ++i) cin >> x[i];
+    cin >> t;
+
+    dp.assign(n + 1, vector<int>(t + 1, -1));
+
+    if (rec(0, 0)) {
+        cout << "Subset exists with sum " << t << endl;
+    } else {
+        cout << "No subset with sum " << t << endl;
+    }
+}
+
+int main() {
+    solve();
+    return 0;
+}

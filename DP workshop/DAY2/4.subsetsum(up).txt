@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> x;
+int n;
+vector<vector<int>> dp;
+vector<int> path;
+
+bool rec(int idx, int sum_left) {
+    if (sum_left < 0) return false;
+    if (sum_left == 0) return true;
+    if (idx == n) return false;
+
+    if (dp[idx][sum_left] != -1) return dp[idx][sum_left];
+
+ 
+    if (sum_left - x[idx] >= 0) {
+        path.push_back(x[idx]);
+        if (rec(idx + 1, sum_left - x[idx])) {
+            return dp[idx][sum_left] = true;
+        }
+        path.pop_back(); // backtrack
+    }
+
+    if (rec(idx + 1, sum_left)) {
+        return dp[idx][sum_left] = true;
+    }
+
+    return dp[idx][sum_left] = false;
+}
+
+void solve() {
+    cin >> n;
+    x.resize(n);
+    for (int i = 0; i < n; ++i) cin >> x[i];
+
+    int q;
+    cin >> q;
+    vector<int> targets(q);
+    for (int i = 0; i < q; ++i) cin >> targets[i];
+
+    for (int t : targets) {
+        dp.assign(n + 1, vector<int>(t + 1, -1));
+        path.clear();
+        cout << "Target sum = " << t << ": ";
+        if (rec(0, t)) {
+            cout << "Subset exists -> { ";
+            for (int val : path) cout << val << " ";
+            cout << "}" << endl;
+        } else {
+            cout << "No subset found." << endl;
+        }
+    }
+}
+
+int main() {
+    solve();
+    return 0;
+}
