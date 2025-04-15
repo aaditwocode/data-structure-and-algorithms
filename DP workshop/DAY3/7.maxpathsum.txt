@@ -1,0 +1,30 @@
+FORM - 2
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> arr;
+vector<vector<int>> dp;
+
+int rec(int r, int c) {
+    if (r <= 0 || c <= 0) return -1e9;
+    if (r == 1 && c == 1) return arr[1][1];
+    if (dp[r][c] != -1) return dp[r][c];
+    int ans = max(rec(r - 1, c), rec(r, c - 1)) + arr[r][c];
+    return dp[r][c] = ans;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    arr = vector<vector<int>>(n + 1, vector<int>(n + 1));
+    dp = vector<vector<int>>(n + 1, vector<int>(n + 1, -1));
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> arr[i][j];
+        }
+    }
+    cout << rec(n, n) << endl;
+    return 0;
+}
+
