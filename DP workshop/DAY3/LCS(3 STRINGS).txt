@@ -1,0 +1,31 @@
+FORM - 3
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string a, b, c;
+int n, m, o;
+vector<vector<vector<int>>> dp;
+
+int rec(int i, int j, int k) {
+    if (i >= n || j >= m || k >= o) return 0;
+    if (dp[i][j][k] != -1) return dp[i][j][k];
+    int ans = 0;
+    if (a[i] == b[j] && b[j] == c[k]) {
+        ans = 1 + rec(i + 1, j + 1, k + 1);
+    } else {
+        ans = max({rec(i + 1, j, k), rec(i, j + 1, k), rec(i, j, k + 1)});
+    }
+    return dp[i][j][k] = ans;
+}
+
+int main() {
+    cin >> a >> b >> c;
+    n = a.size();
+    m = b.size();
+    o = c.size();
+    dp.resize(n, vector<vector<int>>(m, vector<int>(o, -1)));
+    cout << rec(0, 0, 0) << endl;
+    return 0;
+}
