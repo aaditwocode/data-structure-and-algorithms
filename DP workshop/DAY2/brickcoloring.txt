@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+
+int N, M, K;
+vector<vector<int>> dp;
+
+int countWays(int i, int k) {
+    if (k > K) return 0;  
+    if (i == N) return (k == K ? 1 : 0);  
+    
+    if (dp[i][k] != -1) return dp[i][k];
+
+    long long same = countWays(i + 1, k) * 1LL;      
+    long long diff = countWays(i + 1, k + 1) * 1LL * (M - 1); 
+
+    return dp[i][k] = (same + diff) % MOD;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        cin >> N >> M >> K;
+        dp.assign(N + 1, vector<int>(K + 2, -1));
+      
+        long long result = (1LL * M * countWays(1, 0)) % MOD;
+        cout << result << endl;
+    }
+    return 0;
+}

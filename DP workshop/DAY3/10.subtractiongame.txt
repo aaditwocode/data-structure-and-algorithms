@@ -1,0 +1,43 @@
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+vector<int> dp;
+
+int rec(int x) {
+    if (x == 0) return 0;
+    
+  
+    if (dp[x] != -1) return dp[x];
+
+    int ans = 0;
+    for (int m = 0; (1 << m) <= x; m++) {
+        if (rec(x - (1 << m)) == 0) {
+            ans = 1;
+            break;
+        }
+    }
+    
+
+    return dp[x] = ans;
+}
+
+bool canWin(int n) {
+    dp.resize(n + 1, -1); 
+    return rec(n) == 1;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of objects: ";
+    cin >> n;
+    
+    if (canWin(n)) {
+        cout << "First player can force a win!" << endl;
+    } else {
+        cout << "First player cannot force a win." << endl;
+    }
+    
+    return 0;
+}
