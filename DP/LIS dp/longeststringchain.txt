@@ -2,27 +2,20 @@ MEMOIZATION+REC
 class Solution {
 private:
     bool isSubsequence(string s, string t) {
-        int size = s.size();
-        int size1 = t.size();
         int i = 0, j = 0;
-        while (i < size && j < size1) {
-            if (s[i] == t[j]) {
-                i++;
-            }
+        while (i < s.size() && j < t.size()) {
+            if (s[i] == t[j]) i++;
             j++;
         }
-        return i == size;
+        return i == s.size();
     }
 
     bool checkPredecessor(string& a, string& b) {
-        int size = a.size();
-        int size1 = b.size();
-        return (size1 - size == 1) && isSubsequence(a, b);
+        return (b.size() - a.size() == 1) && isSubsequence(a, b);
     }
 
     int f(int idx, int previdx, vector<string>& words, vector<vector<int>>& dp) {
-        if (idx >= words.size()) return 0;
-
+        if (idx == words.size()) return 0;
         if (dp[idx][previdx + 1] != -1) return dp[idx][previdx + 1];
 
         int skip = f(idx + 1, previdx, words, dp);
@@ -37,17 +30,16 @@ private:
 
 public:
     int longestStrChain(vector<string>& words) {
-        auto myFunction = [](const string& a, const string& b) {
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
             return a.size() < b.size();
-        };
-
-        sort(words.begin(), words.end(), myFunction);
+        });
 
         int n = words.size();
         vector<vector<int>> dp(n, vector<int>(n + 1, -1));
         return f(0, -1, words, dp);
     }
 };
+
 
 
 BOTTOM UP

@@ -1,38 +1,27 @@
-vector<int> printingLongestIncreasingSubsequence(vector<int> arr, int n) {
+vector<int> printingLongestIncreasingSubsequence(vector<int>& arr, int n) {
     if (n == 0) return {};
 
-    vector<int> t(n, 1); // t[i] stores the length of the LIS ending at index i
-    vector<int> prev_idx(n, -1); // prev_idx[i] stores the previous index in the LIS for arr[i]
-    
-    int last_chosen_index = 0;
-    int maxL = 1;
+    vector<int> dp(n, 1), prev(n, -1);
+    int maxLen = 1, lastIdx = 0;
 
-    // Bottom-up DP to compute the LIS
-    for (int i = 1; i < n; i++) {
-        for (int j = 0; j < i; j++) {
-            if (arr[i] > arr[j]) {
-                if (t[i] < t[j] + 1) {
-                    t[i] = t[j] + 1;
-                    prev_idx[i] = j;
-                }
+    for (int i = 1; i < n; ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {
+                dp[i] = dp[j] + 1;
+                prev[i] = j;
             }
         }
-        
-        if (t[i] > maxL) {
-            maxL = t[i];
-            last_chosen_index = i;
+        if (dp[i] > maxLen) {
+            maxLen = dp[i];
+            lastIdx = i;
         }
     }
 
-    // Reconstruct the LIS
-    vector<int> result;
-    while (last_chosen_index >= 0) {
-        result.push_back(arr[last_chosen_index]);
-        last_chosen_index = prev_idx[last_chosen_index];
+    vector<int> lis;
+    while (lastIdx != -1) {
+        lis.push_back(arr[lastIdx]);
+        lastIdx = prev[lastIdx];
     }
-
-    // Reverse to get the LIS in the correct order
-    reverse(result.begin(), result.end());
-    
-    return result;
+    reverse(lis.begin(), lis.end());
+    return lis;
 }

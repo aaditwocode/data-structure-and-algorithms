@@ -1,54 +1,41 @@
-BOTTOM UP 
+#include <bits/stdc++.h>
+using namespace std;
 
 class Solution {
 private:
-    int lengthOfLIS(vector<int>& nums) {
-        int n = nums.size(); 
-        vector<int> t(n, 1);  
-        int maxL = 1; 
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]) {
-                    t[i] = max(t[i], t[j] + 1);
-                    maxL = max(maxL, t[i]);
-                }
-            }
+    vector<int> dpStart, dpEnd;
+
+    int lisFromStart(int idx, vector<int>& nums) {
+        if (dpStart[idx] != -1) return dpStart[idx];
+        int ans = 1;
+        for (int prev = 0; prev < idx; ++prev) {
+            if (nums[prev] < nums[idx])
+                ans = max(ans, 1 + lisFromStart(prev, nums));
         }
-        
-        return maxL;
+        return dpStart[idx] = ans;
+    }
+
+    int lisFromEnd(int idx, vector<int>& nums) {
+        if (dpEnd[idx] != -1) return dpEnd[idx];
+        int ans = 1;
+        for (int next = nums.size() - 1; next > idx; --next) {
+            if (nums[next] < nums[idx])
+                ans = max(ans, 1 + lisFromEnd(next, nums));
+        }
+        return dpEnd[idx] = ans;
     }
 
 public:
     int LongestBitonicSequence(int n, vector<int>& nums) {
-        if (n == 0) return 0;
-
-        vector<int> lis_start(n, 1);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]) {
-                    lis_from_start[i] = max(lis_start[i], lis_start[j] + 1);
-                }
-            }
+        dpStart.resize(n, -1);
+        dpEnd.resize(n, -1);
+        
+        int maxLen = 0;
+        for (int i = 0; i < n; ++i) {
+            int inc = lisFromStart(i, nums);
+            int dec = lisFromEnd(i, nums);
+            maxLen = max(maxLen, inc + dec - 1);
         }
-
-        vector<int> lis_end(n, 1);
-        for (int i = n - 1; i >= 0; i--) {
-            for (int j = n - 1; j > i; j--) {
-                if (nums[j] < nums[i]) {
-                    lis_end[i] = max(lis_end[i], lis_end[j] + 1);
-                }
-            }
-        }
-
-        int maxBitonicLength = 0;
-        for (int i = 0; i < n; i++) {
-            if (lis_from_start[i] > 1 && lis_from_end[i] > 1) {
-                maxBitonicLength = max(maxBitonicLength, lis_start[i] + lis_end[i] - 1);
-            }
-        }
-
-        return maxBitonicLength;
+        return maxLen;
     }
 };
-
