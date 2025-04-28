@@ -1,43 +1,31 @@
-class Solution {
-public:
-    int lastStoneWeightII(vector<int>& stones) {
-        int totalSum = 0;
-        for (int stone : stones) {
-            totalSum += stone;
-        }
+#include <bits/stdc++.h>
+using namespace std;
 
-        int n = stones.size();
-        int target = totalSum / 2;
-        
-        // DP table for subset sum
-        vector<vector<bool>> dp(n + 1, vector<bool>(target + 1, false));
-        
-        // Initialize base cases
-        for (int i = 0; i <= n; ++i) {
-            dp[i][0] = true; // A sum of 0 is always possible
-        }
-        
-        // Fill the DP table
-        for (int i = 1; i <= n; ++i) {
-            for (int j = 1; j <= target; ++j) {
-                if (stones[i - 1] <= j) {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - stones[i - 1]];
-                } else {
-                    dp[i][j] = dp[i - 1][j];
-                }
-            }
-        }
-        
-        // Find the largest sum closest to totalSum / 2
-        int maxSubsetSum = 0;
-        for (int j = target; j >= 0; --j) {
-            if (dp[n][j]) {
-                maxSubsetSum = j;
-                break;
-            }
-        }
+vector<vector<int>> dp;
 
-        // Calculate the minimum difference
-        return totalSum - 2 * maxSubsetSum;
-    }
-};
+int solve(vector<int>& stones, int i, int currentSum, int totalSum) {
+    int n = stones.size();
+    if (i == n) 
+        return abs((totalSum - currentSum) - currentSum);
+    
+    if (dp[i][currentSum] != -1)
+        return dp[i][currentSum];
+    
+    int take = solve(stones, i + 1, currentSum + stones[i], totalSum);
+    int notTake = solve(stones, i + 1, currentSum, totalSum);
+    
+    return dp[i][currentSum] = min(take, notTake);
+}
+
+int lastStoneWeightII(vector<int>& stones) {
+    int totalSum = accumulate(stones.begin(), stones.end(), 0);
+    int n = stones.size();
+    dp.resize(n + 1, vector<int>(totalSum + 1, -1));
+    return solve(stones, 0, 0, totalSum);
+}
+
+int main() {
+    vector<int> stones = {2,7,4,1,8,1};
+    cout << lastStoneWeightII(stones);
+    return 0;
+}

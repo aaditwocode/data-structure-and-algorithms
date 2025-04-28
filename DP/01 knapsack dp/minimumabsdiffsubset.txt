@@ -1,45 +1,38 @@
-TABULATION+BOTTOM UP
+REC+MEMOIZATION
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
-    bool isSubsetSum(vector<int>& arr, int target, vector<bool>& lastRow) {
-        int n = arr.size();
-        vector<vector<bool>> t(n + 1, vector<bool>(target + 1, false));
-        
-        for (int i = 0; i <= n; ++i) {
-            for (int j = 0; j <= target; ++j) {
-                if (j == 0) {
-                    t[i][j] = true;
-                } else if (i == 0) {
-                    t[i][j] = false;
-                } else {
-                    if (arr[i - 1] <= j) {
-                        t[i][j] = t[i - 1][j - arr[i - 1]] || t[i - 1][j];
-                    } else {
-                        t[i][j] = t[i - 1][j];
-                    }
-                }
-            }
+    vector<vector<int>> dp;
+    
+    int solve(int i, int sum, vector<int>& arr) {
+        if (i == 0) {
+            if (sum == 0 || sum == arr[0]) return 1;
+            return 0;
         }
         
-        // Copy the last row of the DP table
-        lastRow = t[n];
-        return t[n][target];
+        if (dp[i][sum] != -1) return dp[i][sum];
+        
+        int notPick = solve(i - 1, sum, arr);
+        int pick = 0;
+        if (arr[i] <= sum)
+            pick = solve(i - 1, sum - arr[i], arr);
+        
+        return dp[i][sum] = (pick || notPick);
     }
     
     int minimumDifference(vector<int>& nums) {
-        int sum = 0;
-        for (int num : nums) {
-            sum += abs(num); // Handle negative numbers by taking their absolute value
-        }
+        int totalSum = 0;
+        for (int num : nums) totalSum += abs(num);
         
-        vector<bool> lastRow(sum + 1, false);
-        isSubsetSum(nums, sum, lastRow);
+        int n = nums.size();
+        dp.resize(n, vector<int>(totalSum + 1, -1));
         
-        // Compute the minimum difference
         int mn = INT_MAX;
-        for (int i = 0; i <= sum / 2; ++i) {
-            if (lastRow[i]) {
-                mn = min(mn, sum - 2 * i);
+        for (int s = 0; s <= totalSum / 2; ++s) {
+            if (solve(n - 1, s, nums)) {
+                mn = min(mn, totalSum - 2 * s);
             }
         }
         
