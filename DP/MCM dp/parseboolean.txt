@@ -3,7 +3,7 @@ const int mod = 1000000007;
 
 class Solution {
 private:
-    int solve(int i, int j, int isTrue, string &exp, vector<vector<vector<int>>> &dp) {
+    ll solve(int i, int j, int isTrue, string& exp, vector<vector<vector<ll>>>& dp) {
         if (i > j) return 0;
 
         if (i == j) {
@@ -41,10 +41,9 @@ private:
     }
 
 public:
-    int evaluateExp(string  expression) {
-        int n =  expression.size();
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, -1)));
-        return solve(0, n - 1, 1,  expression, dp);
+    int evaluateExp(string expression) {
+        int n = expression.size();
+        vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(n, vector<ll>(2, -1)));
+        return (int)solve(0, n - 1, 1, expression, dp);
     }
 };
-

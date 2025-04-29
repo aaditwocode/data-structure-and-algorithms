@@ -23,8 +23,7 @@ int solve(const string& s, int i, int j, vector<vector<int>>& dp) {
         ans = min(ans, temp);
     }
 
-    dp[i][j] = ans ;
-    return dp[i][j];
+   return dp[i][j] = ans ;
 }
 
 int minCutPalindrome(string s) {
