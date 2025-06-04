@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        long number = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            number ^= nums[i];
+        }
+
+        long mask = number & (-number);
+
+        int g1 = 0;
+        int g2 = 0;
+        
+        for (int num : nums) {
+            if (num & mask) {
+                g1 ^= num;
+            } else {
+                g2 ^= num;
+            }
+        }
+
+        return {g1, g2};
+    }
+};
