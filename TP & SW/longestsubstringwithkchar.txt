@@ -1,0 +1,22 @@
+#include <unordered_map>
+#include <algorithm>
+
+class Solution {
+public:
+    int lengthOfLongestSubstringKDistinct(string s, int k) {
+        if (k == 0) return 0;
+        unordered_map<char, int> freq;
+        int left = 0, max_len = 0;
+        for (int right = 0; right < s.size(); ++right) {
+            freq[s[right]]++;
+            while (freq.size() > k) {
+                if (--freq[s[left]] == 0) {
+                    freq.erase(s[left]);
+                }
+                left++;
+            }
+            max_len = max(max_len, right - left + 1);
+        }
+        return max_len;
+    }
+};
