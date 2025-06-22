@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> firstNegInt(vector<int>& arr, int k) {
+        vector<int> result;
+        queue<int> negIndices;
+        int i = 0, j = 0;
+        int n = arr.size();
+
+        while (j < n) {
+       
+            if (arr[j] < 0) {
+                negIndices.push(j);
+            }
+
+          
+            if (j - i + 1 < k) {
+                j++;
+            }
+            
+            else if (j - i + 1 == k) {
+               
+                if (!negIndices.empty()) {
+                    result.push_back(arr[negIndices.front()]);
+                } else {
+                    result.push_back(0);
+                }
+
+                if (!negIndices.empty() && negIndices.front() == i) {
+                    negIndices.pop();
+                }
+                i++;
+                j++;
+            }
+        }
+
+        return result;
+    }
+};
