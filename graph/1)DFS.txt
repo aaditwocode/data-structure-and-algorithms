@@ -1,0 +1,35 @@
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    void dfsHelper(unordered_map<int, vector<int>>& adjlist, int u, vector<bool>& visited, vector<int>& result) {
+        if (visited[u]) return;
+
+        visited[u] = true;
+        result.push_back(u);
+
+        for (int v : adjlist[u]) {
+            if (!visited[v]) {
+                dfsHelper(adjlist, v, visited, result);
+            }
+        }
+    }
+
+    vector<int> dfs(vector<vector<int>>& adj) {
+        int V = adj.size();
+        unordered_map<int, vector<int>> adjlist;
+
+        for (int u = 0; u < V; ++u) {
+            for (int v : adj[u]) {
+                adjlist[u].push_back(v);
+            }
+        }
+
+        vector<bool> visited(V, false);
+        vector<int> result;
+        dfsHelper(adjlist, 0, visited, result);
+        return result;
+    }
+};
