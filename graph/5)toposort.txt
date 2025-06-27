@@ -1,0 +1,39 @@
+class Solution {
+  public:
+    void toposortdfs(unordered_map<int, vector<int>> &adj, int u, vector<bool> &visited, stack<int> &st) {
+        visited[u] = true;
+
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                toposortdfs(adj, v, visited, st);
+            }
+        }
+
+        st.push(u);
+    }
+
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        unordered_map<int, vector<int>> adj;
+
+        for (auto &e : edges) {
+            adj[e[0]].push_back(e[1]);
+        }
+
+        vector<bool> visited(V, false);
+        stack<int> st;
+
+        for (int u = 0; u < V; u++) {
+            if (!visited[u]) {
+                toposortdfs(adj, u, visited, st);
+            }
+        }
+
+        vector<int> result;
+        while (!st.empty()) {
+            result.push_back(st.top());
+            st.pop();
+        }
+
+        return result;
+    }
+};
