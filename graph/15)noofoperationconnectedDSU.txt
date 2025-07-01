@@ -1,0 +1,52 @@
+class Solution {
+public:
+vector<int> parent;
+vector<int> rankdsu;
+
+int find(int x) {
+    if (parent[x] != x) parent[x] = find(parent[x]);
+    return parent[x];
+}
+
+void unionSet(int x, int y) {
+    int px = find(x);
+    int py = find(y);
+    if (px != py) {
+        if (rankdsu[px] > rankdsu[py]) {
+            parent[py] = px;
+        } else if (rankdsu[py] > rankdsu[px]) {
+            parent[px] = py;
+        } else {
+            parent[px] = py;
+            rankdsu[py]++;
+        }
+    }
+}
+
+int makeConnected(int n, vector<vector<int>>& connections) {
+    if (connections.size() < n - 1) return -1;
+
+    parent.resize(n);
+    rankdsu.resize(n, 0);
+    for (int i = 0; i < n; i++) parent[i] = i;
+
+    int cnt = 0;
+    int components = n;
+    for (auto &edge : connections) {
+        int u = edge[0];
+        int v = edge[1];
+
+        if (find(u) == find(v)) {
+            cnt++; 
+        } else {
+            unionSet(u, v);
+            components--;
+        }
+    }
+
+
+    if (cnt >= components - 1) return components - 1;
+    return -1;
+}
+
+};

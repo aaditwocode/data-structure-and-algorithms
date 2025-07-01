@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<int> parent;
+    vector<int> rankdsu;
+
+    int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]);
+        return parent[x];
+    }
+
+    void unionSet(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+        if (px != py) {
+            if (rankdsu[px] > rankdsu[py]) {
+                parent[py] = px;
+            } else if (rankdsu[py] > rankdsu[px]) {
+                parent[px] = py;
+            } else {
+                parent[px] = py;
+                rankdsu[py]++;
+            }
+        }
+    }
+
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        parent.resize(n);
+        rankdsu.resize(n, 0);
+        for (int i = 0; i < n; i++) parent[i] = i;
+
+        for (auto &edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            unionSet(u, v);
+        }
+
+        unordered_map<int, int> mpp;
+        for (int i = 0; i < n; i++) {
+            int leader = find(i);
+            mpp[leader]++;
+        }
+
+        long long result = 0;
+        long long remain = n;
+
+        for (auto &it : mpp) {
+            long long size = it.second;
+            result += size * (remain - size);
+            remain -= size;
+        }
+
+        return result;
+    }
+};
