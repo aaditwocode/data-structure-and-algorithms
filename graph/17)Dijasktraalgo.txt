@@ -1,0 +1,76 @@
+class Solution {
+public:
+    vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
+        vector<vector<pair<int, int>>> adj(V);
+        vector<int> result(V, 1e9);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        result[src] = 0;
+        
+        for (auto &e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+        }
+
+    
+        pq.push({0, src});
+
+        while (!pq.empty()) {
+            int dist = pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            for (auto &p : adj[node]) {
+                int adjnode = p.first;
+                int wt = p.second;
+                if (dist + wt < result[adjnode]) {
+                    result[adjnode] = dist + wt;
+                    pq.push({result[adjnode], adjnode});
+                }
+            }
+        }
+
+        return result;
+    }
+};
+
+
+
+////////////////////////////////////////////////////////////
+
+vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
+    vector<vector<pair<int, int>>> adj(V);
+    vector<int> result(V, 1e9);
+    set<pair<int, int>> st;
+    result[src] = 0;
+
+    for (auto &e : edges) {
+        int u = e[0], v = e[1], w = e[2];
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+
+    st.insert({0, src});
+
+    while (!st.empty()) {
+        auto it = *st.begin();
+        int dist = it.first;
+        int node = it.second;
+        st.erase(it);
+
+        for (auto &p : adj[node]) {
+            int adjnode = p.first;
+            int wt = p.second;
+
+            if (dist + wt < result[adjnode]) {
+                if (result[adjnode] != 1e9) {
+                    st.erase({result[adjnode], adjnode});
+                }
+                result[adjnode] = dist + wt;
+                st.insert({result[adjnode], adjnode});
+            }
+        }
+    }
+
+    return result;
+}
