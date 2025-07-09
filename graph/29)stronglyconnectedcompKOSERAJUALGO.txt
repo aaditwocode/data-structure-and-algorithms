@@ -1,0 +1,51 @@
+//Position this line where user code will be pasted.
+class Solution {
+  public:
+    void dfs1(int u, vector<vector<int>> &adj, vector<bool> &visited, stack<int> &st) {
+        visited[u] = true;
+        for (int v : adj[u]) {
+            if (!visited[v]) dfs1(v, adj, visited, st);
+        }
+        st.push(u);
+    }
+
+    void dfs2(int u, vector<vector<int>> &rev, vector<bool> &visited) {
+        visited[u] = true;
+        for (int v : rev[u]) {
+            if (!visited[v]) dfs2(v, rev, visited);
+        }
+    }
+
+    int kosaraju(vector<vector<int>> &adj) {
+        int V = adj.size();
+        vector<bool> visited(V, false);
+        stack<int> st;
+
+        // Step 1: Toposort (1st DFS)
+        for (int i = 0; i < V; ++i) {
+            if (!visited[i]) dfs1(i, adj, visited, st);
+        }
+
+        // Step 2: Reverse the graph
+        vector<vector<int>> rev(V);
+        for (int u = 0; u < V; ++u) {
+            for (int v : adj[u]) {
+                rev[v].push_back(u);
+            }
+        }
+
+        // Step 3: DFS on reversed graph in toposort order
+        fill(visited.begin(), visited.end(), false);
+        int scc = 0;
+        while (!st.empty()) {
+            int node = st.top(); 
+            st.pop();
+            if (!visited[node]) {
+                dfs2(node, rev, visited);
+                scc++;
+            }
+        }
+
+        return scc;
+    }
+};

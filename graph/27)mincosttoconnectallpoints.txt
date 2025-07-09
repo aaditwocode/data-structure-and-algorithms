@@ -1,0 +1,51 @@
+class Solution {
+public:
+    typedef tuple<int, int, int> T;
+
+    int primalgo(int V, vector<vector<pair<int, int>>> &adj) {
+        priority_queue<T, vector<T>, greater<T>> pq;
+        vector<bool> inmst(V, false);
+        vector<int> parent(V, -1);
+        pq.push(make_tuple(0, 0, -1));
+
+        int sum = 0;
+
+        while (!pq.empty()) {
+            int wt, node, par;
+            tie(wt, node, par) = pq.top();
+            pq.pop();
+
+            if (inmst[node]) continue;
+
+            inmst[node] = true;
+            parent[node] = par;
+            sum += wt;
+
+            for (auto &edge : adj[node]) {
+                int adjNode = edge.first;
+                int weight = edge.second;
+
+                if (!inmst[adjNode]) {
+                    pq.push(make_tuple(weight, adjNode, node));
+                }
+            }
+        }
+
+        return sum;
+    }
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        vector<vector<pair<int, int>>> adj(n);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int wt = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                adj[i].push_back({j, wt});
+                adj[j].push_back({i, wt});
+            }
+        }
+
+        return primalgo(n, adj);
+    }
+};
