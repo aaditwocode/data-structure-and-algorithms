@@ -1,0 +1,52 @@
+class Solution {
+public:
+    void dfsHelper(unordered_map<int, vector<int>>& adj, int u, stack<int>& st) {
+        
+        while (!adj[u].empty()) {
+            int v = adj[u].back();
+            adj[u].pop_back();
+            dfsHelper(adj, v, st);
+        }
+        st.push(u);  
+    }
+
+    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+        unordered_map<int, vector<int>> adj;
+        unordered_map<int, int> indegree, outdegree;
+
+   
+        for (auto& edge : pairs) {
+            int u = edge[0], v = edge[1];
+            adj[u].push_back(v);
+            outdegree[u]++;
+            indegree[v]++;
+        }
+
+      
+        int startNode = pairs[0][0];
+        for (auto& it : adj) {
+            int node = it.first;
+            if (outdegree[node] - indegree[node] == 1) {
+                startNode = node;
+                break;
+            }
+        }
+
+        stack<int> st;
+        dfsHelper(adj, startNode, st);
+
+     
+        vector<vector<int>> result;
+        int prev = st.top(); 
+        st.pop();
+        
+        while (!st.empty()) {
+            int curr = st.top(); 
+            st.pop();
+            result.push_back({prev, curr});
+            prev = curr;
+        }
+
+        return result;
+    }
+};
