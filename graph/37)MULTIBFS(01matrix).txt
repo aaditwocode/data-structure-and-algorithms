@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        if (mat.empty() || mat[0].empty())
+            return {};
+
+        int m = mat.size(), n = mat[0].size();
+        queue<pair<int, int>> q;
+        int MAX_VALUE = m * n;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    q.push({i, j});
+                } else {
+                    mat[i][j] = MAX_VALUE;
+                }
+            }
+        }
+
+        vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        auto is_safe = [&](int x, int y) {
+            return x >= 0 && x < m && y >= 0 && y < n;
+        };
+
+        while (!q.empty()) {
+            auto [row, col] = q.front();
+            q.pop();
+
+            for (auto& dir : directions) {
+                int r = row + dir[0];
+                int c = col + dir[1];
+
+                if (is_safe(r, c) && mat[r][c] > mat[row][col] + 1) {
+                    mat[r][c] = mat[row][col] + 1;
+                    q.push({r, c});
+                }
+            }
+        }
+
+        return mat;
+    }
+};
