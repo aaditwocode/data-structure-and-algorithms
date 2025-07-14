@@ -40,3 +40,48 @@ class Solution {
         return kahnBFS(adj, indegree, V);
     }
 };
+
+
+///////////////////////////////////////////////////////////////////
+reverse kahn algo application
+
+class Solution {
+public:
+    vector<int> kahnBFS(unordered_map<int, vector<int>> &adj, vector<int> &indegree, int V) {
+        queue<int> q;
+        vector<int> result;
+
+        for (int i = 0; i < V; i++) {
+            if (indegree[i] == 0) q.push(i);
+        }
+
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            result.push_back(u);
+            for (int v : adj[u]) {
+                indegree[v]--;
+                if (indegree[v] == 0) q.push(v);
+            }
+        }
+
+        sort(result.begin(), result.end());  // required output format
+        return result;
+    }
+
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int V = graph.size();
+        unordered_map<int, vector<int>> adj;  // reverse graph
+        vector<int> indegree(V, 0);
+
+        // Step 1: Reverse edges
+        for (int u = 0; u < V; u++) {
+            for (int v : graph[u]) {
+                adj[v].push_back(u);      // reverse the direction
+                indegree[u]++;            // original outdegree becomes indegree
+            }
+        }
+
+        // Step 2: Topo sort on reverse graph using Kahn's algorithm
+        return kahnBFS(adj, indegree, V);
+    }
+};
