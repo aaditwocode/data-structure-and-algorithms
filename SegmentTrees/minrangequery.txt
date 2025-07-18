@@ -1,0 +1,45 @@
+#include <iostream>
+#include <climits>
+using namespace std;
+
+void buildtree(int i, int l, int r, int segtree[], int arr[]) {
+    if (l == r) {
+        segtree[i] = arr[l];
+        return;
+    }
+    int mid = (l + r) / 2;
+    buildtree(2 * i + 1, l, mid, segtree, arr);
+    buildtree(2 * i + 2, mid + 1, r, segtree, arr);
+    segtree[i] = min(segtree[2 * i + 1], segtree[2 * i + 2]);
+}
+
+int query(int i, int l, int r, int start, int end, int segtree[]) {
+    if (r < start || l > end) return INT_MAX;
+    if (l >= start && r <= end) return segtree[i];
+    int mid = (l + r) / 2;
+    int left = query(2 * i + 1, l, mid, start, end, segtree);
+    int right = query(2 * i + 2, mid + 1, r, start, end, segtree);
+    return min(left, right);
+}
+
+int* constructST(int arr[], int n) {
+    int* segtree = new int[4 * n];
+    buildtree(0, 0, n - 1, segtree, arr);
+    return segtree;
+}
+
+int RMQ(int st[], int n, int a, int b) {
+    return query(0, 0, n - 1, a, b, st);
+}
+
+// Example usage
+int main() {
+    int arr[] = {1, 3, 2, 7, 9, 11};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int* segtree = constructST(arr, n);
+
+    cout << RMQ(segtree, n, 1, 4) << endl; // Query minimum from index 1 to 4
+    delete[] segtree;
+    return 0;
+}
