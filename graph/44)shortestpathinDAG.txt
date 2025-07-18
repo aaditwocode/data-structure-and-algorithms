@@ -1,0 +1,52 @@
+class Solution {
+  public:
+    void dfs(unordered_map<int, vector<pair<int, int>>>& adj, int u, stack<int>& st, vector<bool>& vis) {
+        vis[u] = true;
+        for (auto& p : adj[u]) {
+            int v = p.first;
+            if (!vis[v]) {
+                dfs(adj, v, st, vis);
+            }
+        }
+        st.push(u);
+    }
+
+    vector<int> shortestPath(int V, int E, vector<vector<int>>& edges) {
+        unordered_map<int, vector<pair<int, int>>> adj;
+        for (auto& it : edges) {
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+        }
+
+        stack<int> st;
+        vector<bool> vis(V, false);
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                dfs(adj, i, st, vis);
+            }
+        }
+
+        vector<int> dist(V, INT_MAX);
+        dist[0] = 0;
+
+        while (!st.empty()) {
+            int u = st.top();
+            st.pop();
+            if (dist[u] != INT_MAX) {
+                for (auto& p : adj[u]) {
+                    int v = p.first;
+                    int wt = p.second;
+                    if (dist[u] + wt < dist[v]) {
+                        dist[v] = dist[u] + wt;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < V; i++) {
+            if (dist[i] == INT_MAX) dist[i] = -1;
+        }
+
+        return dist;
+    }
+};
