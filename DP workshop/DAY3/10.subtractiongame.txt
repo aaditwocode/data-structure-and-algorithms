@@ -1,3 +1,4 @@
+FORM - 5
 #include <vector>
 #include <iostream>
 
@@ -11,6 +12,7 @@ int rec(int x) {
   
     if (dp[x] != -1) return dp[x];
 
+//ASSUME ANY TRANSITION TO WIN YOU LOSE 
     int ans = 0;
     for (int m = 0; (1 << m) <= x; m++) {
         if (rec(x - (1 << m)) == 0) {

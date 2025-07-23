@@ -2,7 +2,6 @@ FORM -4
 
 #include <vector>
 #include <climits>
-
 using namespace std;
 
 vector<vector<int>> dp;

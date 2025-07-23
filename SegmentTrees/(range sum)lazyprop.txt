@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> arr = {1, 3, 5, 7, 9, 11};
+vector<int> segtree;
+vector<int> lazy;
+int n = arr.size();
+
+void buildTree(int i, int l, int r) {
+    if (l == r) {
+        segtree[i] = arr[l];
+        return;
+    }
+    int mid = (l + r) / 2;
+    buildTree(2 * i + 1, l, mid);
+    buildTree(2 * i + 2, mid + 1, r);
+    segtree[i] = segtree[2 * i + 1] + segtree[2 * i + 2];
+}
+
+void propagate(int i, int l, int r) {
+    if (lazy[i] != 0) {
+        segtree[i] += (r - l + 1) * lazy[i];
+        if (l != r) {
+            lazy[2 * i + 1] += lazy[i];
+            lazy[2 * i + 2] += lazy[i];
+        }
+        lazy[i] = 0;
+    }
+}
+
+void updateRange(int i, int l, int r, int ql, int qr, int val) {
+    propagate(i, l, r);
+
+    if (r < ql || l > qr)
+        return;
+
+    if (l >= ql && r <= qr) {
+        lazy[i] += val;
+        propagate(i, l, r);
+        return;
+    }
+
+    int mid = (l + r) / 2;
+    updateRange(2 * i + 1, l, mid, ql, qr, val);
+    updateRange(2 * i + 2, mid + 1, r, ql, qr, val);
+    segtree[i] = segtree[2 * i + 1] + segtree[2 * i + 2];
+}
+
+int rangeQuery(int i, int l, int r, int ql, int qr) {
+    propagate(i, l, r);
+
+    if (r < ql || l > qr)
+        return 0;
+
+    if (l >= ql && r <= qr)
+        return segtree[i];
+
+    int mid = (l + r) / 2;
+    int leftSum = rangeQuery(2 * i + 1, l, mid, ql, qr);
+    int rightSum = rangeQuery(2 * i + 2, mid + 1, r, ql, qr);
+    return leftSum + rightSum;
+}
+
+int main() {
+    segtree.resize(4 * n);
+    lazy.resize(4 * n, 0);
+    buildTree(0, 0, n - 1);
+
+    cout << "Initial Segment Tree:\n";
+    for (int i = 0; i < 2 * n; ++i)
+        cout << "segtree[" << i << "] = " << segtree[i] << endl;
+
+    int start = 1, end = 3;
+    cout << "\nRange Sum from index " << start << " to " << end << ": ";
+    cout << rangeQuery(0, 0, n - 1, start, end) << endl;
+
+    updateRange(0, 0, n - 1, 1, 4, 5);
+
+    cout << "\nAfter Range Update (add 5 from index 1 to 4):\n";
+    for (int i = 0; i < 2 * n; ++i)
+        cout << "segtree[" << i << "] = " << segtree[i] << endl;
+
+    cout << "\nRange Sum from index " << start << " to " << end << ": ";
+    cout << rangeQuery(0, 0, n - 1, start, end) << endl;
+
+    return 0;
+}
