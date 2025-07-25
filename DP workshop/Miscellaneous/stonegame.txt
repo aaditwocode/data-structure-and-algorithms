@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MAX = 1001;
+int dp[MAX][MAX];
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+
+    for (int i = 0; i <= a; i++) {
+        for (int j = 0; j <= b; j++) {
+            bool win = false;
+            for (int x = 1; x <= i; x++) {
+                if (dp[i - x][j] == 0) win = true;
+            }
+            for (int x = 1; x <= j; x++) {
+                if (dp[i][j - x] == 0) win = true;
+            }
+            for (int x = 1; x <= min(i, j); x++) {
+                if (dp[i - x][j - x] == 0) win = true;
+            }
+            dp[i][j] = win ? 1 : 0;
+        }
+    }
+
+    cout << (dp[a][b] ? "First" : "Second") << endl;
+    return 0;
+}
