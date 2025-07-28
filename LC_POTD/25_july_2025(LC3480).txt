@@ -1,0 +1,43 @@
+TOPIC----(ARRAY+GREEDY+STL)
+
+#define ll long long
+
+class Solution {
+public:
+    ll maxSubarrays(int n, vector<vector<int>>& conflictingPairs) {
+        vector<vector<int>> mp(n+1);
+       
+        for(auto &cp: conflictingPairs) {
+            int a = cp[0], b = cp[1];
+            if(a < b) swap(a, b);
+
+            mp[a].push_back(b);
+        }
+
+        ll normally = 0;
+        int firstMaxi = 0, secondMaxi = 0;
+
+        vector<ll> extras(n+1, 0);
+
+        for(int endPoint = 1; endPoint <= n; endPoint++) {
+            for(int &u: mp[endPoint]) {
+                if(firstMaxi <= u) {
+             
+                    secondMaxi = firstMaxi;
+                    firstMaxi = u;
+                } else if(secondMaxi < u) {
+               
+                    secondMaxi = u;
+                }
+            }
+
+         
+            normally += (endPoint - firstMaxi); 
+            extras[firstMaxi] += firstMaxi - secondMaxi;
+        }
+
+
+        return normally + *max_element(extras.begin(), extras.end());
+
+    }
+};

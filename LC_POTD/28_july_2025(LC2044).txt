@@ -1,0 +1,26 @@
+{ARRAY+BACKTRACKING}
+
+class Solution {
+public:
+ int max_or=0,count=0;
+  void backtrack(int i,int curor,vector<int> &nums){
+    if(i==nums.size()){
+        if(curor==max_or){
+            count++;
+        }
+        return;
+    }
+
+    backtrack(i+1,curor | nums[i], nums);
+    backtrack(i+1, curor ,nums);
+
+  }
+    int countMaxOrSubsets(vector<int>& nums) {
+    
+        for(auto it:nums){
+            max_or |= it;
+        }
+        backtrack(0,0,nums);
+        return count;
+    }
+};

@@ -1,0 +1,28 @@
+TOPIC----(SET+ARRAY+STL)
+
+class Solution {
+public:
+    int maxSum(vector<int>& nums) {
+        unordered_set<int> seen;
+        int maxNegative = INT_MIN;
+        bool hasPositive = false;
+
+        for (int num : nums) {
+            if (num > 0) {
+                seen.insert(num);
+                hasPositive = true;
+            } else {
+                maxNegative = max(maxNegative, num);
+            }
+        }
+
+        if (!hasPositive)
+            return maxNegative;
+
+        int sum = 0;
+        for (int val : seen)
+            sum += val;
+
+        return sum;
+    }
+};
