@@ -1,0 +1,54 @@
+(HAMILTONIAN WALK VARIANTS)
+
+#include <iostream>
+#include <cstring>
+#include <vector>
+using namespace std;
+
+int n, m;
+unordered_map<int ,vector<int>> adj[20]; 
+int dp[20][1 << 15]; 
+
+int rec(int i, int mask) {
+   
+    if (mask == (1 << n) - 1) {
+        return 1;
+    }
+
+    if (dp[i][mask] != -1) {
+        return dp[i][mask];
+    }
+
+    int ans = 0;
+    for (int v : adj[i]) {
+        
+        if (!(mask & (1 << v))) {
+            ans += rec(v, mask | (1 << v));
+        }
+    }
+
+    return  dp[i][mask] = ans;
+}
+
+int main() {
+    cin >> n >> m;
+    
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--; 
+        adj[u].push_back(v);
+        adj[v].push_back(u); 
+    }
+
+    memset(dp, -1, sizeof(dp));
+
+  
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+        total += rec(i, 1 << i);
+    }
+
+    cout << total << endl;
+    return 0;
+}
