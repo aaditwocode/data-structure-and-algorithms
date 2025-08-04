@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> dp;
+
+    int recur(int i) {
+        if (i == 0) return 0;
+        if (dp[i] != -1) return dp[i];
+        return dp[i] = recur(i / 2) + (i % 2);
+    }
+
+    vector<int> countBits(int n) {
+        dp.resize(n + 1, -1);
+        vector<int> ans;
+        for (int i = 0; i <= n; i++) {
+            ans.push_back(recur(i));
+        }
+        return ans;
+    }
+};

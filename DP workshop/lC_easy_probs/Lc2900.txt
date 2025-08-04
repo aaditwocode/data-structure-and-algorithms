@@ -1,0 +1,45 @@
+class Solution {
+private:
+    vector<vector<int>> dp;
+    vector<string> result;
+
+    int rec(int i, int prevGroup, vector<string>& words, vector<int>& groups) {
+        if (i == words.size()) return 0;
+        if (dp[i][prevGroup + 1] != -1) return dp[i][prevGroup + 1];
+
+
+        int skip = rec(i + 1, prevGroup, words, groups);
+
+        int take = 0;
+        if (groups[i] != prevGroup) {
+            take = 1 + rec(i + 1, groups[i], words, groups);
+        }
+
+        return dp[i][prevGroup + 1] = max(skip, take);
+    }
+
+    void build(int i, int prevGroup, vector<string>& words, vector<int>& groups) {
+        if (i == words.size()) return;
+
+        int skip = rec(i + 1, prevGroup, words, groups);
+        int take = 0;
+        if (groups[i] != prevGroup)
+            take = 1 + rec(i + 1, groups[i], words, groups);
+
+        if (take >= skip && groups[i] != prevGroup) {
+            result.push_back(words[i]);
+            build(i + 1, groups[i], words, groups);
+        } else {
+            build(i + 1, prevGroup, words, groups);
+        }
+    }
+
+public:
+    vector<string> getLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        int n = words.size();
+        dp.assign(n, vector<int>(n + 1, -1));
+        rec(0, -1, words, groups);
+        build(0, -1, words, groups);
+        return result;
+    }
+};
