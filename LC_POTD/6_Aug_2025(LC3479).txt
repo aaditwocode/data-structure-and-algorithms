@@ -1,0 +1,67 @@
+TOPIC-{SEGMENT TREE}
+class segTree{
+    public:
+    vector<long long> seg;
+    vector<int> nums;
+    int n;
+
+    segTree(const vector<int> a){
+        n=a.size();
+        nums=a;
+        seg.assign(4*n,0);
+        build(0,0,n-1);
+    }
+    
+    void build(int i , int l, int r){
+        if(l==r){
+            seg[i]=nums[l];
+            return ;
+        }
+
+        int mid=(l+r)/2;
+        build(2 * i+1,l,mid);
+        build(2*i+2,mid+1,r);
+        seg[i]=max(seg[2*i+1],seg[2*i+2]);
+    }
+
+    void update(int i , int l, int r, int pos , int val){
+        if(l==r){
+            seg[i]=val;
+            return ;
+        }
+        int mid=(l+r)/2;
+        if(pos<=mid){
+            update(2*i+1,l,mid,pos,val);
+        }else{
+            update(2*i+2,mid+1,r,pos,val);
+        }
+        seg[i]=max(seg[2*i+1],seg[2*i+2]);
+    }
+
+    int find(int i , int l ,int r,int val){
+        if(seg[i]<val) return -1;
+        if(l==r) return l;
+        int mid=(l+r)/2;
+        int left=find(2*i+1,l,mid,val);
+        if(left!=-1) return left;
+        return find(2*i+2,mid+1,r,val);
+    }
+};
+
+class Solution {
+public:
+    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+        int ans=0;
+        segTree st(baskets);
+        int n=baskets.size();
+        for(auto f:fruits){
+           int curr= st.find(0,0,n-1,f);
+            if(curr==-1){
+                ans++;
+            }else{
+                st.update(0,0,n-1,curr,LLONG_MIN);
+            }
+        }
+        return ans;
+    }
+};

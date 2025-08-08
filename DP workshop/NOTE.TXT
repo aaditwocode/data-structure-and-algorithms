@@ -1,29 +1,75 @@
-FORM -0
-LEVEL,CHOICE,CHECK,MOVE;
-EG-CLIMBING STAIRS TYPE
+DP Patterns and Their Forms
 
-FORM -1
-TAKE OR NOT TAKE PROBLEMS
-EG- SUBSET,KNAPSACK,SKILL BASED
+ FORM (Form 0)**
+
+* **Description:** Dividing a set or sequence into parts or subsets.
+* **Characteristics:** Typically involves choices like partitioning or grouping.
+* **Common DP Types:** LEVEL, CHOICE, CHECK, MOVE
+* **Example Problems:**
+
+  * Climbing Stairs
+  * Partition problems
+
+---
+
+**TAKE OR NOT TAKE FORM (Form 1)**
+
+* **Description:** Decision to include or exclude the current element.
+* **Characteristics:** Usually binary choice at each step.
+* **Example Problems:**
+
+  * Subset Sum
+  * Knapsack
+  * Skill-based selection problems
+
+---
+
+**BEST ANSWER UP TO THAT ELEMENT (Form 2)**
+
+* **Description:** Keep track of the best answer up to the current index.
+* **Characteristics:** Deals with path/sequence/subarray dependencies.
+* **Example Problems:**
+
+  * Longest Increasing Subsequence (LIS)
+  * Maximum Path Sum
+
+---
+
+**FINDING COMMON IN SUBSEQUENCES (Form 3)**
+
+* **Description:** Multi-sequence DP problems finding commonalities like longest common subsequence.
+* **Characteristics:** Comparing two or more sequences.
+* **Example Problems:**
+
+  * Longest Common Subsequence (LCS)
+  * Edit Distance (can fit here too)
+
+---
+
+**LR DP (Form 4)**
+
+* **Description:** DP on intervals (left and right indices) to find best answers within a range.
+* **Characteristics:** Focus on subproblems defined by ranges or segments.
+* **Example Problems:**
+
+  * Rod Cutting
+  * Matrix Chain Multiplication
+  * Palindrome Partitioning
+
+---
+
+**GAME DP (Form 5)**
+
+* **Description:** Turn-based or multi-step games with states defined by moves.
+* **Characteristics:** Often uses pruning, base case caching, and memoization. Lookahead 4/5 steps common.
+* **Example Problems:**
+
+  * Nim Game
+  * Optimal Strategy for a Game
+  * Stone Game
 
 
-FORM -2
-BEST ANS UPTO THAT ELEMENT,
-IF SEE PATH/SEQUENCE/SUBARRAY DEPENDENCIES MAY LIE HERE 
-EG-LIS,MAXPATHSUM
 
-
-FORM -3
-FINDING COMMON IN SUBSEQUENCES MULTI SEQUENCE DP
-EG-LCS
-
-FORM -4
-LR DP
-BEST ANS BETWEEN L AND R
-EG-ROD CUTTING
-
-FORM -5
-GAME DP
 
 
 5/4 STEPS LOOK 

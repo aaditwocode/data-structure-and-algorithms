@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> dir = {-1, 0, 1};
+    vector<vector<int>> dp;  
+    int MOD = 1e9 + 7;
+    
+    int rec(int steps, int pos, int arrLen, int step) {
+       
+        if (pos < 0 || pos >= arrLen) return 0;
+        
+      
+        if (step == steps) {
+            return pos == 0 ? 1 : 0;
+        }
+        
+        if (dp[step][pos] != -1) return dp[step][pos];
+        
+        long long ans = 0;
+        for (int d : dir) {
+            ans += rec(steps, pos + d, arrLen, step + 1);
+            ans %= MOD;
+        }
+        
+        return dp[step][pos] = (int)ans;
+    }
+    
+    int numWays(int steps, int arrLen) {
+  
+        arrLen = min(arrLen, steps + 1);
+        dp.assign(steps + 1, vector<int>(arrLen, -1));
+        return rec(steps, 0, arrLen, 0);
+    }
+};

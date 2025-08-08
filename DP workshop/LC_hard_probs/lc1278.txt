@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> cos; 
+    vector<vector<int>> dp;
+    int cost(int i, int j, string &s) {
+        if (i >= j) return 0;
+        if (cos[i][j] != -1) return cos[i][j];
+        int ans = cost(i + 1, j - 1, s);
+        if (s[i] != s[j]) ans++;
+        return cos[i][j] = ans;
+    }
+
+    int rec(int i, int j, string &s) { 
+        if (j == 0 && i != -1) return 1e9;
+        if (i == -1) {
+            if (j == 0) return 0;
+            else return 1e9;
+        }
+        if (dp[i][j] != -1) return dp[i][j];
+
+        int ans = 1e9;
+        for (int x = i; x >= 0; x--) {
+            ans = min(ans, rec(x - 1, j - 1, s) + cost(x, i, s));
+        }
+        return dp[i][j] = ans;
+    }
+
+    int palindromePartition(string s, int k) {
+        int n = s.size();
+        cos.assign(n, vector<int>(n, -1));
+        dp.assign(n, vector<int>(k + 1, -1));
+        return rec(n - 1, k, s);
+    }
+};

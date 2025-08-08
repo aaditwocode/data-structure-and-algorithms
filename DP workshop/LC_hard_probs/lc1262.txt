@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int rec(vector<int>& nums, int i, int remainder) {
+        if (i == nums.size()) {
+           
+            return (remainder == 0) ? 0 : INT_MIN;
+        }
+
+        if (dp[i][remainder] != -1) return dp[i][remainder];
+
+      
+        int skip = rec(nums, i + 1, remainder);
+        int take = rec(nums, i + 1, (remainder + nums[i]) % 3);
+        if (take != INT_MIN) {
+            take += nums[i];
+        }
+
+        return dp[i][remainder] = max(skip, take);
+    }
+
+    int maxSumDivThree(vector<int>& nums) {
+        int n = nums.size();
+        dp.assign(n + 1, vector<int>(3, -1));
+        int ans = rec(nums, 0, 0);
+        return ans < 0 ? 0 : ans;  
+    }
+};
