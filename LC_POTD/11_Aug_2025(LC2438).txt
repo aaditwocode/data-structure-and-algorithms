@@ -1,0 +1,27 @@
+TOPIC-{SEGMENT TREES ,BIT MANIPULATION}
+class Solution {
+public:
+    vector<int> productQueries(int n, vector<vector<int>>& queries) {
+        const int MOD = 1e9 + 7;
+        vector<int> powers;
+
+    
+        for (int i = 0; i < 31; i++) {
+            if (n & (1 << i)) { 
+                powers.push_back(1 << i);
+            }
+        }
+
+        vector<int> result;
+        for (auto &p : queries) {
+            int one = p[0], second = p[1];
+            long long value = 1;
+            for (int i = one; i <= second; i++) {
+                value = (value * powers[i]) % MOD;
+            }
+            result.push_back((int)value);
+        }
+
+        return result;
+    }
+};

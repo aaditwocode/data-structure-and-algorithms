@@ -1,0 +1,23 @@
+TOPIC-{DP}
+
+class Solution {
+public:
+    const int MOD = 1000000007;
+
+    int solve(int i, int sum, int &n, int &x, vector<vector<int>> & dp ){
+        if(sum==n) return 1;
+        if(sum+pow(i,x)>n) return 0;
+        if(dp[i][sum]!=-1) return dp[i][sum];
+     
+       int pick = solve(i+1, sum+pow(i,x), n, x, dp);
+
+  
+       int notpick = solve(i+1, sum, n, x, dp);
+
+       return dp[i][sum] = (pick + notpick)%MOD;
+    }
+    int numberOfWays(int n, int x) {
+        vector<vector<int>> dp(301, vector<int>(301, -1));
+        return solve(1, 0, n, x, dp);
+    }
+};
